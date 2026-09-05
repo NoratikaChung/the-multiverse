@@ -27,7 +27,7 @@
 
 The Multiverse is a multi-theme developer portfolio with an interactive project showcase. Stage 1 uses a Vite vanilla JavaScript application and a nested Idea-Board application.
 
-Theme #1 now supports two retro operating-system flavors: Windows 95/98 as the default and the preserved Classic Macintosh System 7.5.3 / Platinum experience. The other four dimensions remain construction placeholders unless a later request expands them.
+Theme #1 now supports two retro operating-system flavors: Windows 95/98 as the default and the preserved Classic Macintosh System 7.5.3 / Platinum experience. Theme #2 is the interactive Three.js developer desk, Theme #3 is the procedural 2D Pixel RPG overworld, and the Sketchbook and Cyber HUD dimensions remain construction placeholders unless a later request expands them.
 
 The OS flavor is persisted in `localStorage` under `retro_os_flavor`. A first visit defaults to `win95`; switching between `win95` and `mac` happens without a page reload.
 
@@ -72,6 +72,7 @@ The latest dual-OS requirement explicitly changed the public Idea-Board URL to p
 - `scripts/start-idea-board.mjs`: starts the ignored Idea-Board checkout on port `3000` and proxies it to public port `5000`.
 - `src/themes/ThreeDDesk.jsx`: framework-free Three.js scene with OrbitControls, procedural desk objects, raycasting, data-driven inspection overlays, camera focus transitions, and explicit disposal.
 - `three`: runtime dependency used by Theme #2; the 3D theme is mounted only for `state.theme === 'desk'` and disposed before leaving it.
+- `src/themes/PixelRPG.jsx`: procedural Canvas 2D overworld with tile collision, keyboard/pointer/touch controls, NPC and building interactions, typewriter dialogue, location banners, data-driven overlays, and explicit disposal.
 - `public/resume-placeholder.pdf`: temporary download asset until the user supplies a real CV.
 - `public/screenshots/project-placeholder.svg`: legacy career-art asset; remove or stop using it when no longer needed.
 - `NOTES.md`: setup and launch instructions for developers.
@@ -175,6 +176,20 @@ Icon labels use a pixel-friendly font and white text with a crisp black outline.
 - Object meaning is exposed through the visible HUD tooltip and modal headings; pointer hover is supplemental feedback.
 - The Idea-Board iframe has a descriptive title, and Escape closes object-detail overlays.
 
+### Pixel RPG requirements
+
+- Theme #3 mounts inside the existing `viewport-root` beneath the fixed 32px Header and uses no external image assets.
+- `src/themes/PixelRPG.jsx` owns the procedural map, static canvas layer, game loop, camera, player movement, collision rectangles, courier NPC, interaction prompt, dialogue, overlays, controls, and listeners.
+- The Archives, Arcade, Academy, Courier, and Communication Beacon are data-bound to the existing profile, career, projects, CV, and Idea-Board contracts.
+- Keyboard movement uses WASD and arrow keys; SPACE/E activates nearby interactions; pointer/touch path clicks and the on-screen D-pad provide accessible alternatives.
+- Leaving Theme #3 cancels the animation frame, removes keyboard, pointer, and touch listeners, clears the canvases, closes overlays, and clears the mount.
+
+### Pixel RPG accessibility
+
+- D-pad, Action, dialogue-option, modal-close, external-link, and CV controls are semantic buttons or links with accessible names.
+- Dialogue and modal overlays move focus to their controls, cycle Tab focus within the active overlay, close with Escape, and restore focus to the opening control.
+- Canvas-only state is supplemented with live status text and visible HTML HUD controls.
+
 ## Accessibility and interaction requirements
 
 - Prefer semantic buttons, links, headings, landmarks, and native dialog behavior.
@@ -206,6 +221,10 @@ Before reporting completion for a change:
 - Verify Theme #2 mounts beneath the Header, marks `3D Desk` active, and does not remount during recruiter dialog updates.
 - Verify leaving and re-entering Theme #2 calls Three.js cleanup and creates a fresh renderer and animation loop.
 - Verify raycast object metadata covers monitor, corkboard, notebook, printer, and contact interactions.
+- Verify Theme #3 mounts beneath the Header, marks `Pixel RPG` active, and does not remount during recruiter dialog updates.
+- Verify player keyboard, pointer path, touch, and D-pad controls respect collision boundaries.
+- Verify Archive, Arcade, Academy, Courier, and Communication Beacon interactions use the expected data and URLs.
+- Verify leaving and re-entering Theme #3 removes its animation, keyboard, pointer, and touch listeners and creates a fresh game loop.
 
 ## Change history
 
@@ -247,3 +266,6 @@ Before reporting completion for a change:
 - Added `three` and implemented `src/themes/ThreeDDesk.jsx` with procedural low-poly desk objects, raycast hover feedback, camera focus transitions, object overlays, direct CV download, Idea-Board iframe launch, and explicit disposal.
 - Integrated Theme #2 through the stable `viewport-root`; recruiter quick view continues to rerender only `dialog-root` while the desk scene remains mounted.
 - Added responsive 3D desk HUD, modal, tooltip, and reset-view styling.
+- User approved Theme #3 implementation as a procedural HTML5 Canvas 2D Pixel RPG overworld.
+- Added `src/themes/PixelRPG.jsx` with Nora's Realm map, procedural buildings and sprites, camera follow, collision, keyboard/pointer/touch movement, courier NPC, interaction prompts, typewriter dialogue, location banners, data-driven overlays, and explicit disposal.
+- Integrated Theme #3 through the stable `viewport-root` and added responsive pixel RPG HUD, D-pad, Action button, dialogue, and modal styling.

@@ -33,6 +33,19 @@ Select an object to focus the camera and open its detail overlay:
 - Mug: displays email, GitHub, and LinkedIn links.
 
 Use `Reset View` to return to the overview camera. Leaving the dimension explicitly disposes the renderer, controls, scene resources, listeners, and animation frame before another theme is rendered.
+
+## Theme #3: Pixel RPG Overworld
+
+The `Pixel RPG` dimension is implemented in `src/themes/PixelRPG.jsx` with a procedural HTML5 Canvas map called Nora's Realm. It does not load external image assets. Grass, water, paths, buildings, trees, fences, the player, and the courier are drawn from pixel primitives.
+
+Controls:
+
+- WASD or Arrow keys: move in four directions.
+- SPACE or E: interact with the nearest marked object.
+- Click or tap the map: walk toward the selected point.
+- On-screen D-pad and `A / Action`: touch-friendly movement and interaction.
+
+Explore the Grand Archives for career history, the Pixel Arcade for Idea-Board, the Wizard's Academy for profile data, the Town Courier for the CV download, and the Communication Beacon outside Nora's Cottage for contact links. The game loop and all keyboard, pointer, and touch listeners are disposed when changing dimensions.
 ## Prerequisites
 
 - Node.js 20 or newer
