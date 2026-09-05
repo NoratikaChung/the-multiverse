@@ -1,0 +1,24 @@
+[
+  {
+    "id": "idea-board",
+    "title": "Idea-Board",
+    "description": "Collaborative real-time board for brainstorming.",
+    "type": "iframe",
+    "localUrl": "http://localhost:3000",
+    "tags": ["Node.js", "Express", "Fullstack"]
+  },
+  {
+    "id": "signal-garden",
+    "title": "Signal Garden",
+    "description": "A generative soundscape that turns data into an evolving garden.",
+    "type": "concept",
+    "tags": ["Web Audio", "Canvas", "Creative Code"]
+  },
+  {
+    "id": "orbit-notes",
+    "title": "Orbit Notes",
+    "description": "A spatial note-taking experiment for connecting ideas visually.",
+    "type": "concept",
+    "tags": ["JavaScript", "Interaction", "Prototype"]
+  }
+]

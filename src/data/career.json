@@ -1,0 +1,38 @@
+[
+  {
+    "title": "Customer Operations Platform",
+    "role": "Senior Full-stack Engineer",
+    "company": "Northstar Systems",
+    "date": "2022 — 2025",
+    "tags": ["React", "Node.js", "PostgreSQL", "Azure"],
+    "description": "Led delivery of a workflow platform that gave service teams a faster, clearer way to resolve customer requests.",
+    "screenshot": "/screenshots/project-placeholder.svg"
+  },
+  {
+    "title": "Financial Planning Workspace",
+    "role": "Product Engineer",
+    "company": "Kite & Co.",
+    "date": "2020 — 2022",
+    "tags": ["TypeScript", "GraphQL", "Design Systems"],
+    "description": "Turned complex planning data into a focused workspace with reusable components and approachable visualizations.",
+    "screenshot": "/screenshots/project-placeholder.svg"
+  },
+  {
+    "title": "Connected Retail Toolkit",
+    "role": "Software Engineer",
+    "company": "Signal House",
+    "date": "2018 — 2020",
+    "tags": ["Vue", "Express", "Redis", "Docker"],
+    "description": "Built dependable tools for distributed retail teams, from inventory workflows to live operational dashboards.",
+    "screenshot": "/screenshots/project-placeholder.svg"
+  },
+  {
+    "title": "Public Data Explorer",
+    "role": "Frontend Developer",
+    "company": "Civic Lab",
+    "date": "2016 — 2018",
+    "tags": ["JavaScript", "D3.js", "Accessibility"],
+    "description": "Made public datasets easier to understand through accessible interactive stories and responsive visual exploration.",
+    "screenshot": "/screenshots/project-placeholder.svg"
+  }
+]
