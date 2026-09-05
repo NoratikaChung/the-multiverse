@@ -5,7 +5,7 @@
     "tagline": "Full-stack collaborative canvas for real-time brainstorming.",
     "description": "An interactive digital brainstorming space engineered with a Node.js and Express backend. Allows creators to map thoughts, cluster ideas, and maintain persistent state across browser sessions.",
     "type": "iframe",
-    "localUrl": "http://localhost:3000",
+    "localUrl": "http://localhost:5000",
     "githubUrl": "https://github.com/NoratikaChung/Idea-Board",
     "tags": ["Node.js", "Express", "JavaScript", "Full-Stack", "Canvas"],
     "featured": true

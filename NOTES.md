@@ -6,7 +6,9 @@ This repository must remain the only application path modified by portfolio work
 
 ## Current integration decision
 
-Idea-Board uses port `3000`, matching its verified `server.js` implementation. The portfolio iframe and `projects.json` intentionally use `http://localhost:3000`.
+Idea-Board's nested server remains on internal port `3000`. The tracked `scripts/start-idea-board.mjs` launcher exposes it through a public proxy on port `5000`, which is the URL used by both OS flavors.
+
+Theme #1 defaults to Windows 95. Use the global OS Flavor switcher to change to Classic Mac System 7. The selected flavor persists in browser `localStorage` under `retro_os_flavor`.
 ## Prerequisites
 
 - Node.js 20 or newer
@@ -36,8 +38,10 @@ npm run start:all
 This starts both applications:
 
 - Portfolio: <http://localhost:5173>
-- Idea-Board: <http://localhost:3000>
-
+- Idea-Board public proxy: <http://localhost:5000>
+- Idea-Board internal upstream: <http://localhost:3000>
+ 
+Theme #1 starts in Windows 95 unless a previous OS preference is stored. Switching to System 7 or back to Windows 95 does not reload the page.
 Press `Ctrl+C` to stop both development servers.
 
 ## Run either application separately

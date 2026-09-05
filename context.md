@@ -27,7 +27,9 @@
 
 The Multiverse is a multi-theme developer portfolio with an interactive project showcase. Stage 1 uses a Vite vanilla JavaScript application and a nested Idea-Board application.
 
-Theme #1 is being transformed into an authentic Classic Macintosh System 7.5.3 / Platinum desktop environment. The other four dimensions remain construction placeholders unless a later request expands them.
+Theme #1 now supports two retro operating-system flavors: Windows 95/98 as the default and the preserved Classic Macintosh System 7.5.3 / Platinum experience. The other four dimensions remain construction placeholders unless a later request expands them.
+
+The OS flavor is persisted in `localStorage` under `retro_os_flavor`. A first visit defaults to `win95`; switching between `win95` and `mac` happens without a page reload.
 
 ## Runtime and package commands
 
@@ -46,34 +48,30 @@ Root scripts:
 
 - `dev`: starts Vite on port `5173`.
 - `build`: creates the Vite production build in ignored `dist/`.
-- `idea-board`: runs `apps/idea-board/server.js`.
+- `idea-board`: runs `scripts/start-idea-board.mjs`.
 - `start:all`: starts the portfolio and Idea-Board through `concurrently`.
 
 Verified service URLs:
 
 - Portfolio: `http://localhost:5173`
-- Idea-Board: `http://localhost:3000`
+- Idea-Board public proxy: `http://localhost:5000`
+- Idea-Board internal upstream: `http://localhost:3000`
 
 ### Port decision
 
-The supplied transformation prompt specified `projects.json.localUrl` as port `5000`, but the verified Idea-Board server hardcodes port `3000`. The user explicitly selected option 2: use the existing verified port `3000`. Keep the project data and iframe URL on port `3000` unless the user explicitly changes this decision.
-
-The Idea-Board server currently listens with:
-
-```js
-const port = 3000;
-```
+The latest dual-OS requirement explicitly changed the public Idea-Board URL to port `5000`. The upstream nested server remains unchanged on port `3000`; `scripts/start-idea-board.mjs` starts it and proxies the complete application and API through port `5000`. Both OS iframe windows use `http://localhost:5000`.
 
 ## Current architecture
 
 - `index.html`: Vite document shell.
-- `src/main.js`: application state, rendering, data-driven windows, desktop interactions, menus, theme switching, and recruiter view.
-- `src/styles.css`: all portfolio presentation and responsive behavior.
+- `src/main.js`: localStorage OS state, rendering, data-driven windows, Windows 95 and Mac desktops, taskbars/menus, drag/focus behavior, dimension switching, and recruiter view.
+- `src/styles.css`: Windows 95 and Classic Mac presentation, responsive behavior, beveled frames, wallpaper, and scrollbar styling.
 - `src/data/profile.json`: personal profile, education, awards, certifications, and skills.
 - `src/data/career.json`: career and project experience entries.
-- `src/data/projects.json`: interactive project metadata, with Idea-Board first.
+- `src/data/projects.json`: interactive project metadata, with Idea-Board first and public URL on port `5000`.
+- `scripts/start-idea-board.mjs`: starts the ignored Idea-Board checkout on port `3000` and proxies it to public port `5000`.
 - `public/resume-placeholder.pdf`: temporary download asset until the user supplies a real CV.
-- `public/screenshots/project-placeholder.svg`: legacy career-art asset; remove or stop using it when the Classic Mac view no longer needs it.
+- `public/screenshots/project-placeholder.svg`: legacy career-art asset; remove or stop using it when no longer needed.
 - `NOTES.md`: setup and launch instructions for developers.
 - `context.md`: this persistent instruction and project-state file; future agents must read it first.
 - `.gitignore`: ignores `node_modules/`, `dist/`, environment files, and `apps/`.
@@ -104,16 +102,25 @@ Career entries:
 3. Final Year Project (USM) — MoodMatch — 2024 - 2025; Gold Medal winner at USM PIXEL 2025.
 4. Microsoft Certificate Bootcamp Capstone — QuickAid Azure — 2024.
 
-## Classic Macintosh requirements
+## Dual OS requirements
 
-### Desktop
+### Windows 95 default
 
-- Theme #1 must look like Classic Apple Macintosh System 7.5.3 / Platinum, not Windows 98 or a generic modern dashboard.
-- Wallpaper: 50% dithered gray canvas using the System 7 pattern.
-- Fixed top menu bar, approximately 24–28px high, white with a black bottom border.
-- Left menu elements: rainbow Apple logo, File, Edit, View, Special, Help.
-- Right menu elements: live 12-hour clock, dimension switcher, Recruiter Quick View toggle.
-- Other dimensions must show: `Dimension under construction - Switch to Retro OS to experience the active theme.` or the Classic Mac equivalent only when the user later changes that requirement.
+- Theme #1 defaults to Windows 95/98 when `retro_os_flavor` is absent or invalid.
+- Use solid `#008080` teal wallpaper and MS Sans Serif/Tahoma-style labels.
+- Desktop icons: My Computer, Recycle Bin, Idea-Board.exe, About_Nora.txt, Resume.pdf, and Boot Macintosh System 7.exe.
+- Bottom taskbar: raised Start button with Windows flag, active window buttons, inset speaker/clock tray.
+- Start menu: Programs, Documents, Switch to Mac OS, Download CV, and Shut Down.
+- Windows must support drag, focus promotion, minimize, maximize/restore, close, title-bar menus, and classic scrollbar treatment.
+- Idea-Board.exe loads the public proxy at `http://localhost:5000`.
+
+### OS switching
+
+- Global controls show Windows 95 and System 7 flavor buttons beside the dimension switcher.
+- Windows desktop shortcut boots to Macintosh.
+- Macintosh desktop shortcut and Special menu boot to Windows 95.
+- Switching calls `localStorage.setItem('retro_os_flavor', flavor)` and re-renders without page reload.
+
 
 ### Desktop icons
 
@@ -139,7 +146,7 @@ Icon labels use a pixel-friendly font and white text with a crisp black outline.
 - Windows include classic close and zoom boxes, draggable title bars, focus/z-index promotion, double/beveled borders, and classic scrollbar styling.
 - Macintosh HD / Career window uses Finder-like list content.
 - About Nora.txt uses SimpleText-like content containing education, all awards, certifications, and grouped skills.
-- Idea-Board.app wraps an iframe to `http://localhost:3000`.
+- Idea-Board.app wraps an iframe to the public proxy at `http://localhost:5000`; the nested upstream remains on `http://localhost:3000`.
 - Recruiter Quick View is modern, high-contrast, one-page, data-driven, and includes a prominent CV download button.
 
 ## Accessibility and interaction requirements
@@ -161,7 +168,7 @@ Before reporting completion for a change:
 2. Run `npm run build`.
 3. Run `npm run start:all` in the background and inspect logs.
 4. Verify portfolio HTTP 200 on `http://localhost:5173`.
-5. Verify Idea-Board HTTP 200 and `/api/ideas` HTTP 200 on `http://localhost:3000`.
+5. Verify Idea-Board HTTP 200 and `/api/ideas` HTTP 200 on `http://localhost:5000`; the launcher must also keep the upstream on `http://localhost:3000`.
 6. Exercise changed behavior through the actual runtime when tooling permits.
 7. Search changed source for TODO/FIXME/stub markers and obsolete generic desktop badges.
 8. Report any unavailable browser or visual verification explicitly instead of claiming it passed.
@@ -190,3 +197,11 @@ Before reporting completion for a change:
  - Updated `NOTES.md` so future developers read this context first and use Idea-Board on port `3000`.
  - Verification evidence: `npm run build` passed; portfolio `/` returned HTTP 200; Idea-Board `/` and `/api/ideas` returned HTTP 200; Idea-Board POST smoke test returned a created idea; all updated JSON parsed successfully; source contained no TODO/FIXME/stub markers or obsolete generic desktop badge implementation.
  - Browser automation remained unavailable because the shared Chromium daemon could not launch. Visual interaction verification is therefore an explicit remaining limitation; runtime and source-level checks passed.
+- User approved the dual-flavor Theme #1 task with Windows 95 as default and Classic Mac as the alternate OS.
+- Added `scripts/start-idea-board.mjs` to preserve the upstream Idea-Board server on port `3000` while exposing a reproducible public proxy on port `5000`.
+- Rebuilt `src/main.js` with `localStorage` OS persistence under `retro_os_flavor`, Windows 95 desktop/taskbar/Start menu/window manager, and Mac boot shortcuts.
+- Reworked `src/styles.css` with Windows 95 teal wallpaper, beveled taskbar/window chrome, Win95 controls, and preserved Mac styling.
+- Verification evidence: `npm run build` passed; portfolio returned HTTP 200 on port `5173`; Idea-Board returned HTTP 200 for `/` and `/api/ideas` through port `5000`; POST through the proxy succeeded; launcher syntax and JSON validation passed; source-level persistence and OS implementation checks passed.
+- Browser automation remained unavailable, so refresh-based localStorage and visual drag/minimize/maximize interaction checks remain an explicit limitation.
+- Added a Mac minimize control with desktop-icon restoration so both OS flavors support minimize, restore, maximize, close, dragging, and focus promotion.
+- Final verification after the Mac minimize change: `npm run build` passed; portfolio, Idea-Board proxy, and proxy API each returned HTTP 200; service logs showed no compile or startup errors.

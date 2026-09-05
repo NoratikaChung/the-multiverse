@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "idea-board": "cd apps/idea-board && node server.js",
+    "idea-board": "node scripts/start-idea-board.mjs",
     "start:all": "concurrently -n \"PORTFOLIO,IDEA-BOARD\" -c \"blue,green\" \"npm run dev\" \"npm run idea-board\""
   },
   "devDependencies": {
