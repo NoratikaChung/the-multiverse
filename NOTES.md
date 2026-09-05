@@ -1,5 +1,12 @@
 # The Multiverse Portfolio
 
+> Before changing this repository, read [`context.md`](./context.md). It contains the persistent project requirements, user constraints, architecture decisions, and verification contract for future sessions.
+
+This repository must remain the only application path modified by portfolio work. Do not commit or push unless the user explicitly requests it.
+
+## Current integration decision
+
+Idea-Board uses port `3000`, matching its verified `server.js` implementation. The portfolio iframe and `projects.json` intentionally use `http://localhost:3000`.
 ## Prerequisites
 
 - Node.js 20 or newer

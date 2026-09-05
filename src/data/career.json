@@ -1,38 +1,58 @@
 [
   {
-    "title": "Customer Operations Platform",
-    "role": "Senior Full-stack Engineer",
-    "company": "Northstar Systems",
-    "date": "2022 — 2025",
-    "tags": ["React", "Node.js", "PostgreSQL", "Azure"],
-    "description": "Led delivery of a workflow platform that gave service teams a faster, clearer way to resolve customer requests.",
-    "screenshot": "/screenshots/project-placeholder.svg"
-  },
-  {
-    "title": "Financial Planning Workspace",
-    "role": "Product Engineer",
-    "company": "Kite & Co.",
-    "date": "2020 — 2022",
-    "tags": ["TypeScript", "GraphQL", "Design Systems"],
-    "description": "Turned complex planning data into a focused workspace with reusable components and approachable visualizations.",
-    "screenshot": "/screenshots/project-placeholder.svg"
-  },
-  {
-    "title": "Connected Retail Toolkit",
+    "id": "k3-advisory",
     "role": "Software Engineer",
-    "company": "Signal House",
-    "date": "2018 — 2020",
-    "tags": ["Vue", "Express", "Redis", "Docker"],
-    "description": "Built dependable tools for distributed retail teams, from inventory workflows to live operational dashboards.",
-    "screenshot": "/screenshots/project-placeholder.svg"
+    "company": "K3 Advisory Group",
+    "period": "Dec 2025 - Present",
+    "location": "Kuala Lumpur, Malaysia",
+    "summary": "Architecting and delivering the company's inaugural client-facing web platform, establishing modern security standards and scalable full-stack infrastructure.",
+    "highlights": [
+      "Engineered the full-stack architecture for K3's first client-facing digital advisory platform.",
+      "Designed secure, role-based access workflows ensuring data confidentiality and client onboarding.",
+      "Collaborated with senior leadership to translate complex business logic into intuitive user interfaces."
+    ],
+    "tags": ["Full-Stack", "Enterprise Architecture", "Client Portal", "Security", "APIs"]
   },
   {
-    "title": "Public Data Explorer",
-    "role": "Frontend Developer",
-    "company": "Civic Lab",
-    "date": "2016 — 2018",
-    "tags": ["JavaScript", "D3.js", "Accessibility"],
-    "description": "Made public datasets easier to understand through accessible interactive stories and responsive visual exploration.",
-    "screenshot": "/screenshots/project-placeholder.svg"
+    "id": "micron-clc",
+    "role": "IT Automation Engineer Intern",
+    "company": "Micron Technology",
+    "period": "Mar 2024 - Sept 2024",
+    "location": "Penang, Malaysia",
+    "summary": "Engineered full-stack automation utilities and delivered operational support for manufacturing host machines across global production sites in Malaysia, Singapore, and China.",
+    "highlights": [
+      "Achieved an 87% reduction in server monitoring time (from 40s to 5s) by architecting the 'CLC Utility Tool'.",
+      "Built web-based management tool using Angular, ASP.NET (C#), and Bash scripting across international server clusters.",
+      "Configured and deployed mission-critical manufacturing hosts, resolving 95%+ of technical incidents within strict SLAs."
+    ],
+    "tags": ["Angular", "ASP.NET", "C#", "Bash Scripting", "Automation", "Scrum"]
+  },
+  {
+    "id": "moodmatch-ai",
+    "role": "Lead Developer & AI Researcher",
+    "company": "Final Year Project (USM)",
+    "period": "2024 - 2025",
+    "location": "Penang, Malaysia",
+    "summary": "Gold Medal Winner at USM PIXEL 2025. Full-stack mobile application using computer vision to recommend music and generate captions based on image moods.",
+    "highlights": [
+      "Trained custom image-analysis machine learning models using Python and TensorFlow.",
+      "Containerized and deployed the inference engine as a custom backend API on Hugging Face.",
+      "Engineered a fluid, cross-platform mobile experience using React Native and Firebase."
+    ],
+    "tags": ["React Native", "TensorFlow", "Python", "Hugging Face", "Firebase", "AI/ML"]
+  },
+  {
+    "id": "quickaid-azure",
+    "role": "Cloud Architect & Backend Engineer",
+    "company": "Microsoft Certificate Bootcamp Capstone",
+    "period": "2024",
+    "location": "Remote",
+    "summary": "Architected and deployed a serverless campus helpdesk solution on Microsoft Azure.",
+    "highlights": [
+      "Engineered serverless backend endpoints using Python on Azure Functions.",
+      "Implemented enterprise secret management via Azure Key Vault and Cosmos DB for persistence.",
+      "Integrated automated email notification pipelines via SendGrid API."
+    ],
+    "tags": ["Microsoft Azure", "Azure Functions", "Cosmos DB", "Key Vault", "Python"]
   }
 ]

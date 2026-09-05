@@ -2,23 +2,12 @@
   {
     "id": "idea-board",
     "title": "Idea-Board",
-    "description": "Collaborative real-time board for brainstorming.",
+    "tagline": "Full-stack collaborative canvas for real-time brainstorming.",
+    "description": "An interactive digital brainstorming space engineered with a Node.js and Express backend. Allows creators to map thoughts, cluster ideas, and maintain persistent state across browser sessions.",
     "type": "iframe",
     "localUrl": "http://localhost:3000",
-    "tags": ["Node.js", "Express", "Fullstack"]
-  },
-  {
-    "id": "signal-garden",
-    "title": "Signal Garden",
-    "description": "A generative soundscape that turns data into an evolving garden.",
-    "type": "concept",
-    "tags": ["Web Audio", "Canvas", "Creative Code"]
-  },
-  {
-    "id": "orbit-notes",
-    "title": "Orbit Notes",
-    "description": "A spatial note-taking experiment for connecting ideas visually.",
-    "type": "concept",
-    "tags": ["JavaScript", "Interaction", "Prototype"]
+    "githubUrl": "https://github.com/NoratikaChung/Idea-Board",
+    "tags": ["Node.js", "Express", "JavaScript", "Full-Stack", "Canvas"],
+    "featured": true
   }
 ]

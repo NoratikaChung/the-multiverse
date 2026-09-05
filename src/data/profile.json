@@ -1,9 +1,47 @@
 {
-  "name": "Alex Morgan",
-  "title": "Full-stack developer & creative technologist",
-  "shortBio": "I build expressive digital products where thoughtful engineering meets playful interaction design.",
-  "email": "hello@example.com",
-  "github": "https://github.com/",
-  "linkedin": "https://www.linkedin.com/",
-  "cvPath": "/resume-placeholder.pdf"
+  "name": "Noratika Chung",
+  "preferredName": "Nora",
+  "title": "Full-Stack Software Engineer",
+  "location": "Kuala Lumpur, Malaysia",
+  "bio": "Full-Stack Software Engineer with a First-Class academic background (CGPA 3.46) and a passion for architecting resilient systems, interactive digital experiences, and practical AI solutions. From reducing manufacturing server monitoring time by 87% at Micron to engineering client-facing platforms at K3 Advisory, I build software that blends performance with thoughtful interaction.",
+  "email": "cnoratika@gmail.com",
+  "github": "https://github.com/NoratikaChung",
+  "linkedin": "https://www.linkedin.com/in/noratika-chung-8b2570219/",
+  "cvPath": "/resume-placeholder.pdf",
+  "education": {
+    "degree": "BSc Computer Science in Software Engineering (Hons.)",
+    "institution": "University of Science Malaysia (USM)",
+    "cgpa": "3.46",
+    "period": "Oct 2021 - Sept 2025"
+  },
+  "awards": [
+    {
+      "title": "Gold Medal Award – USM PIXEL 2025",
+      "detail": "Awarded for innovative application of AI in the MoodMatch mobile recommendation project."
+    },
+    {
+      "title": "Gold Medal – Virtual Innovation Competition (VIC) 2024",
+      "detail": "Secured Gold Medal for the SkinSafe mobile health application."
+    },
+    {
+      "title": "Dean's List Awards",
+      "detail": "Recognized across multiple academic semesters at USM for scholastic excellence."
+    },
+    {
+      "title": "Yeoh Fung Kee & Wong Yew Nyong USM Scholarship",
+      "detail": "Full undergraduate degree scholarship recipient (2021 - 2025)."
+    }
+  ],
+  "certifications": [
+    "AWS Certified AI Practitioner (AWS)",
+    "Microsoft Azure AI Fundamentals (Microsoft)",
+    "Microsoft Azure Developer Associate (Microsoft)"
+  ],
+  "skills": {
+    "frontend": ["React.js", "Angular", "React Native", "TypeScript", "JavaScript", "Tailwind CSS"],
+    "backend": ["Node.js", "Express", "ASP.NET", "C#", "Python", "RESTful APIs", "Bash Scripting"],
+    "cloudDevOps": ["Microsoft Azure", "AWS Cloud", "Docker", "CI/CD Pipelines", "Git"],
+    "database": ["PostgreSQL", "Firebase", "Cosmos DB", "SQL / NoSQL"],
+    "aiMachineLearning": ["TensorFlow", "Python", "Data Preprocessing", "Model Deployment"]
+  }
 }
