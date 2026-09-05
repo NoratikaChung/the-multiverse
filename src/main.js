@@ -1,4 +1,5 @@
 import './styles.css';
+import { createHeader, updateHeader } from './components/Header.jsx';
 import profile from './data/profile.json';
 import career from './data/career.json';
 import projects from './data/projects.json';
@@ -22,6 +23,7 @@ const state = {
   positions: {},
   notice: '',
 };
+let headerElement;
 
 const macCatalog = {
   about: { title: 'About Nora.txt', icon: 'document', kind: 'about' },
@@ -164,28 +166,12 @@ function renderWindow(id, index) {
   return `<article class="${classes.join(' ')}" data-window="${id}" style="${style}" aria-label="${escapeHtml(config.title)}"><header class="mac-titlebar" data-drag-handle="true"><button class="window-box close-box" data-action="close-window" data-window="${id}" type="button" aria-label="Close ${escapeHtml(config.title)}"></button><span class="window-title">${escapeHtml(config.title)}</span><span class="mac-window-actions"><button class="window-box minimize-box" data-action="minimize-window" data-window="${id}" type="button" aria-label="Minimize ${escapeHtml(config.title)}">_</button><button class="window-box zoom-box" data-action="zoom-window" data-window="${id}" type="button" aria-label="Zoom ${escapeHtml(config.title)}"></button></span></header><div class="mac-window-body">${renderWindowContent(config.kind)}</div></article>`;
 }
 
-function renderGlobalControls() {
-  const dimensions = [['retro', 'Retro'], ['desk', '3D Desk'], ['rpg', 'Pixel RPG'], ['sketch', 'Sketchbook'], ['hud', 'Cyber HUD']];
-  return `<div class="global-controls"><div class="os-flavor-switcher" aria-label="OS flavor"><span>OS Flavor:</span><button class="os-flavor-button ${state.osFlavor === 'win95' ? 'active' : ''}" data-action="set-os" data-os="win95" aria-pressed="${state.osFlavor === 'win95'}" type="button">${iconMarkup('windows', 'switcher-icon')} Windows 95</button><button class="os-flavor-button ${state.osFlavor === 'mac' ? 'active' : ''}" data-action="set-os" data-os="mac" aria-pressed="${state.osFlavor === 'mac'}" type="button">${rainbowAppleMarkup()} System 7</button></div><div class="dimension-switcher" aria-label="Dimension switcher">${dimensions.map(([id, label]) => `<button class="dimension-button ${state.theme === id ? 'active' : ''}" data-action="theme" data-theme="${id}" aria-pressed="${state.theme === id}" type="button">${label}${state.theme === id ? ' (Active)' : ''}</button>`).join('')}</div><button class="quick-view-button" data-action="quick-view" type="button">Recruiter Quick View</button></div>`;
-}
 
 function renderWindowsStartMenu() {
   if (!state.startMenu) return '';
   return `<aside class="win-start-menu" aria-label="Start menu"><div class="win-start-banner"><strong>Windows</strong><span>95</span></div><div class="win-start-items"><button data-action="start-submenu" type="button">Programs <span>▶</span></button><button data-action="open-window" data-window="career" type="button">Documents <span>▶</span></button><button data-action="set-os" data-os="mac" type="button">Switch to Mac OS</button><button data-action="download-resume" type="button">Download CV</button><button data-action="shutdown" type="button">Shut Down...</button></div></aside>`;
 }
 
-function renderMacMenu() {
-  if (!state.menu) return '';
-  const items = {
-    apple: `<button data-action="about-computer" type="button">About This Computer...</button>`,
-    file: `<button data-action="download-resume" type="button">Download CV</button><button type="button" disabled>Close Window</button>`,
-    edit: `<button type="button" disabled>Undo</button><button type="button" disabled>Copy</button>`,
-    view: `<button type="button" disabled>as Icons</button><button type="button" disabled>as List</button>`,
-    special: `<button data-action="restart" type="button">Restart</button><button data-action="set-os" data-os="win95" type="button">Boot to Windows 95</button><button data-action="theme" data-theme="retro" type="button">Switch Theme</button>`,
-    help: `<button data-action="about-computer" type="button">Macintosh Help</button>`,
-  };
-  return `<div class="mac-menu-popup" role="menu" aria-label="${escapeHtml(state.menu)} menu">${items[state.menu]}</div>`;
-}
 
 function renderDialogs() {
   const about = state.aboutComputer ? `<dialog class="system-dialog" id="about-computer" aria-labelledby="about-computer-title"><div class="dialog-titlebar"><h2 id="about-computer-title">About This Computer</h2><button class="window-box close-box" data-action="close-dialog" data-dialog="about-computer" type="button" aria-label="Close About This Computer"></button></div><div class="dialog-content"><div class="about-computer-mark">${rainbowAppleMarkup()}</div><h3>Macintosh Portfolio System 7.5.3</h3><p><strong>${escapeHtml(profile.name)}</strong> · ${escapeHtml(profile.title)}</p><p>${escapeHtml(profile.bio)}</p><dl class="system-specs"><div><dt>Memory</dt><dd>First-Class academic background</dd></div><div><dt>Education</dt><dd>USM · CGPA ${escapeHtml(profile.education.cgpa)}</dd></div><div><dt>Location</dt><dd>${escapeHtml(profile.location)}</dd></div></dl></div><div class="dialog-actions"><button class="retro-button" data-action="restart" type="button">Restart</button><button class="retro-button primary" data-action="close-dialog" data-dialog="about-computer" type="button">Close</button></div></dialog>` : '';
@@ -194,25 +180,69 @@ function renderDialogs() {
 }
 
 function renderWin95() {
-  return `<div class="win95-desktop"><div class="win-global-bar">${renderGlobalControls()}</div><main class="win-desktop-surface" aria-label="Windows 95 desktop"><div class="win-desktop-icons">${renderDesktopIcon('career', 'My Computer', 'computer')}${renderDesktopIcon('contact', 'Recycle Bin', 'recycle')}${renderDesktopIcon('idea', 'Idea-Board.exe', 'win-application')}${renderDesktopIcon('about', 'About_Nora.txt', 'win-document')}${renderDesktopIcon('resume', 'Resume.pdf', 'resume', 'download')}${renderDesktopIcon('boot-mac', 'Boot Macintosh System 7.exe', 'floppy', 'set-os-mac')}</div><div class="win-window-layer">${state.windowOrder.filter((id) => state.windows[id]).map((id, index) => renderWindow(id, index)).join('')}</div><div class="desktop-notice" aria-live="polite">${escapeHtml(state.notice)}</div></main><footer class="win-taskbar"><button class="win-start-button" data-action="toggle-start" aria-expanded="${state.startMenu}" type="button">${iconMarkup('windows', 'start-icon')}<strong>Start</strong></button><div class="win-taskbar-tabs" aria-label="Open windows">${state.windowOrder.filter((id) => state.windows[id]).map((id) => `<button class="win-taskbar-tab ${state.activeWindow === id ? 'active' : ''} ${state.windows[id].minimized ? 'minimized' : ''}" data-action="restore-window" data-window="${id}" type="button">${iconMarkup(catalog()[id].icon, 'task-icon')}${escapeHtml(catalog()[id].title)}</button>`).join('')}</div><div class="win-tray"><span class="speaker-icon">${iconMarkup('speaker')}</span><time id="clock" aria-label="Current time"></time></div></footer>${renderWindowsStartMenu()}</div>`;
+  return `<div class="win95-desktop"><main class="win-desktop-surface" aria-label="Windows 95 desktop"><div class="win-desktop-icons">${renderDesktopIcon('career', 'My Computer', 'computer')}${renderDesktopIcon('contact', 'Recycle Bin', 'recycle')}${renderDesktopIcon('idea', 'Idea-Board.exe', 'win-application')}${renderDesktopIcon('about', 'About_Nora.txt', 'win-document')}${renderDesktopIcon('resume', 'Resume.pdf', 'resume', 'download')}${renderDesktopIcon('boot-mac', 'Boot Macintosh System 7.exe', 'floppy', 'set-os-mac')}</div><div class="win-window-layer">${state.windowOrder.filter((id) => state.windows[id]).map((id, index) => renderWindow(id, index)).join('')}</div><div class="desktop-notice" aria-live="polite">${escapeHtml(state.notice)}</div></main><footer class="win-taskbar"><button class="win-start-button" data-action="toggle-start" aria-expanded="${state.startMenu}" type="button">${iconMarkup('windows', 'start-icon')}<strong>Start</strong></button><div class="win-taskbar-tabs" aria-label="Open windows">${state.windowOrder.filter((id) => state.windows[id]).map((id) => `<button class="win-taskbar-tab ${state.activeWindow === id ? 'active' : ''} ${state.windows[id].minimized ? 'minimized' : ''}" data-action="restore-window" data-window="${id}" type="button">${iconMarkup(catalog()[id].icon, 'task-icon')}${escapeHtml(catalog()[id].title)}</button>`).join('')}</div><div class="win-tray"><span class="speaker-icon">${iconMarkup('speaker')}</span></div></footer>${renderWindowsStartMenu()}</div>`;
 }
 
 function renderMac() {
-  return `<div class="classic-mac"><header class="mac-system-bar"><div class="mac-system-left"><button class="apple-menu-button" data-action="mac-menu-toggle" data-menu="apple" type="button" aria-label="Apple menu">${rainbowAppleMarkup()}</button>${['File', 'Edit', 'View', 'Special', 'Help'].map((menu) => `<button class="mac-menu-button" data-action="mac-menu-toggle" data-menu="${menu.toLowerCase()}" type="button">${menu}</button>`).join('')}</div><div class="mac-system-right">${renderGlobalControls()}<time id="clock" aria-label="Current time"></time></div></header>${renderMacMenu()}<main class="mac-desktop" aria-label="Classic Macintosh desktop"><div class="mac-desktop-icons">${renderDesktopIcon('career', 'Macintosh HD', 'hard-drive')}${renderDesktopIcon('lab', 'The Lab', 'folder')}${renderDesktopIcon('idea', 'Idea-Board.app', 'application')}${renderDesktopIcon('about', 'About Nora.txt', 'document')}${renderDesktopIcon('resume', 'Resume.pdf', 'resume', 'download')}${renderDesktopIcon('boot-win', 'Boot to Windows 95', 'floppy', 'set-os-win')}</div><div class="mac-window-layer">${state.windowOrder.filter((id) => state.windows[id]).map((id, index) => renderWindow(id, index)).join('')}</div><button class="mac-desktop-icon trash-shortcut ${state.selectedIcon === 'contact' ? 'is-selected' : ''}" data-action="open-window" data-window="contact" type="button"><span class="desktop-icon-art">${iconMarkup('trash')}</span><span class="icon-label">Contact Me</span></button><div class="desktop-notice" aria-live="polite">${escapeHtml(state.notice)}</div></main></div>`;
+  return `<div class="classic-mac"><main class="mac-desktop" aria-label="Classic Macintosh desktop"><div class="mac-desktop-icons">${renderDesktopIcon('career', 'Macintosh HD', 'hard-drive')}${renderDesktopIcon('lab', 'The Lab', 'folder')}${renderDesktopIcon('idea', 'Idea-Board.app', 'application')}${renderDesktopIcon('about', 'About Nora.txt', 'document')}${renderDesktopIcon('resume', 'Resume.pdf', 'resume', 'download')}${renderDesktopIcon('boot-win', 'Boot to Windows 95', 'floppy', 'set-os-win')}</div><div class="mac-window-layer">${state.windowOrder.filter((id) => state.windows[id]).map((id, index) => renderWindow(id, index)).join('')}</div><button class="mac-desktop-icon trash-shortcut ${state.selectedIcon === 'contact' ? 'is-selected' : ''}" data-action="open-window" data-window="contact" type="button"><span class="desktop-icon-art">${iconMarkup('trash')}</span><span class="icon-label">Contact Me</span></button><div class="desktop-notice" aria-live="polite">${escapeHtml(state.notice)}</div></main></div>`;
+}
+
+function handleHeaderAction(action, data) {
+  if (action === 'set-os') setOsFlavor(data.os);
+  else if (action === 'theme') {
+    state.theme = data.theme;
+    state.menu = null;
+    render();
+  } else if (action === 'menu-toggle') {
+    state.menu = state.menu === data.menu ? null : data.menu;
+    render();
+  } else if (action === 'quick-view') {
+    state.quickView = true;
+    render();
+  } else if (action === 'download-resume') downloadResume();
+  else if (action === 'about-computer') {
+    state.aboutComputer = true;
+    state.menu = null;
+    render();
+  } else if (action === 'restart') {
+    state.menu = null;
+    state.aboutComputer = false;
+    state.notice = `${state.osFlavor === 'win95' ? 'Windows 95' : 'Macintosh'} restarted. Welcome back, Nora.`;
+    state.windowOrder = ['about'];
+    state.windows = { about: { minimized: false, maximized: false } };
+    state.activeWindow = 'about';
+    render();
+  }
+}
+
+function currentClockText() {
+  return new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: '2-digit' }).format(new Date());
 }
 
 function render() {
   const isRetro = state.theme === 'retro';
-  app.innerHTML = `<div class="site-shell ${isRetro ? (state.osFlavor === 'win95' ? 'win95-shell' : 'mac-shell') : 'placeholder-theme'}" data-theme="${escapeHtml(state.theme)}">${isRetro ? (state.osFlavor === 'win95' ? renderWin95() : renderMac()) : `<main class="construction-screen"><div class="construction-card"><p class="document-kicker">DIMENSION ${escapeHtml(state.theme.toUpperCase())}</p><h1>Dimension under construction</h1><p>Switch to Retro OS to experience the active theme.</p><button class="retro-button primary" data-action="theme" data-theme="retro" type="button">Return to Retro OS</button></div></main>`}${renderDialogs()}</div>`;
+  let shell = app.querySelector('.site-shell');
+  if (!shell) {
+    shell = document.createElement('div');
+    shell.innerHTML = '<div class="header-root"></div><div class="viewport-root"></div><div class="dialog-root"></div>';
+    app.replaceChildren(shell);
+    headerElement = createHeader({ onAction: handleHeaderAction });
+    shell.querySelector('.header-root').append(headerElement);
+  }
+  shell.className = `site-shell ${isRetro ? (state.osFlavor === 'win95' ? 'win95-shell' : 'mac-shell') : 'placeholder-theme'}`;
+  shell.dataset.theme = state.theme;
+  updateHeader(headerElement, { currentTheme: state.theme, osFlavor: state.osFlavor, menu: state.menu, clockText: currentClockText() });
+  const viewport = shell.querySelector('.viewport-root');
+  viewport.innerHTML = isRetro ? (state.osFlavor === 'win95' ? renderWin95() : renderMac()) : `<main class="construction-screen"><div class="construction-card"><p class="document-kicker">DIMENSION ${escapeHtml(state.theme.toUpperCase())}</p><h1>Dimension under construction</h1><p>Switch to Retro OS to experience the active theme.</p><button class="retro-button primary" data-action="theme" data-theme="retro" type="button">Return to Retro OS</button></div></main>`;
+  shell.querySelector('.dialog-root').innerHTML = renderDialogs();
   updateClock();
   bindWindowInteractions();
   bindDialogs();
 }
 
 function updateClock() {
-  document.querySelectorAll('#clock').forEach((clock) => {
-    clock.textContent = new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: '2-digit' }).format(new Date());
-  });
+  const clock = document.querySelector('#unified-clock');
+  if (clock) clock.textContent = currentClockText();
 }
 
 function bindWindowInteractions() {
@@ -238,7 +268,7 @@ function bindWindowInteractions() {
       const origin = { x: event.clientX, y: event.clientY, left: rect.left, top: rect.top };
       const move = (moveEvent) => {
         const left = Math.max(4, origin.left + moveEvent.clientX - origin.x);
-        const top = Math.max(state.osFlavor === 'win95' ? 46 : 30, origin.top + moveEvent.clientY - origin.y);
+        const top = Math.max(4, origin.top + moveEvent.clientY - origin.y);
         element.style.left = `${left}px`;
         element.style.top = `${top}px`;
         state.positions[id] = { left, top };
@@ -268,7 +298,7 @@ function bindDialogs() {
 
 document.addEventListener('click', (event) => {
   const target = event.target.closest('[data-action]');
-  if (state.menu && !event.target.closest('.mac-menu-popup') && !event.target.closest('[data-action="mac-menu-toggle"]')) {
+  if (state.menu && !event.target.closest('.unified-header')) {
     state.menu = null;
     render();
     if (!target) return;
@@ -284,10 +314,7 @@ document.addEventListener('click', (event) => {
   if (action === 'set-os') setOsFlavor(os);
   else if (action === 'set-os-mac') setOsFlavor('mac');
   else if (action === 'set-os-win') setOsFlavor('win95');
-  else if (action === 'mac-menu-toggle') {
-    state.menu = state.menu === menu ? null : menu;
-    render();
-  } else if (action === 'toggle-start') {
+  else if (action === 'toggle-start') {
     state.startMenu = !state.startMenu;
     render();
   } else if (action === 'start-submenu') {

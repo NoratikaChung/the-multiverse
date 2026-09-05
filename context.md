@@ -64,7 +64,7 @@ The latest dual-OS requirement explicitly changed the public Idea-Board URL to p
 ## Current architecture
 
 - `index.html`: Vite document shell.
-- `src/main.js`: localStorage OS state, rendering, data-driven windows, Windows 95 and Mac desktops, taskbars/menus, drag/focus behavior, dimension switching, and recruiter view.
+- `src/main.js`: localStorage OS state, stable shell/viewport rendering, data-driven windows, Windows 95 and Mac desktops, taskbars/menus, drag/focus behavior, dimension switching, and recruiter view.
 - `src/styles.css`: Windows 95 and Classic Mac presentation, responsive behavior, beveled frames, wallpaper, and scrollbar styling.
 - `src/data/profile.json`: personal profile, education, awards, certifications, and skills.
 - `src/data/career.json`: career and project experience entries.
@@ -122,6 +122,16 @@ Career entries:
 - Switching calls `localStorage.setItem('retro_os_flavor', flavor)` and re-renders without page reload.
 
 
+## Unified header and layout contract
+
+- `src/components/Header.jsx` is the dedicated framework-free Vite component for all top navigation, dimension switching, OS flavor switching, recruiter quick view, Mac menus, and the live clock.
+- The Header root is created once and remains mounted while the viewport and dialogs rerender.
+- Header geometry is fixed at `top: 0`, `left: 0`, `width: 100%`, `height: 32px`, and `z-index: 9999`.
+- Windows work area is fixed from `top: 32px` to `bottom: 28px`; the Windows taskbar is fixed at 28px.
+- Mac work area is fixed from `top: 32px` to the bottom of the viewport.
+- Window dragging is clamped to the work-area origin so title bars remain below the fixed header.
+- The OS switcher reserves its width outside the Retro dimension with hidden visibility so right-side controls retain stable coordinates.
+
 ### Desktop icons
 
 Do not use generic text badges, colored squares, or labels like `[TXT]`, `[DOC]`, `[APP]`, or `[WEB]` as the desktop icon artwork.
@@ -173,6 +183,10 @@ Before reporting completion for a change:
 7. Search changed source for TODO/FIXME/stub markers and obsolete generic desktop badges.
 8. Report any unavailable browser or visual verification explicitly instead of claiming it passed.
 9. Stop local services after verification when the user asks to inspect the work.
+- Verify `.unified-header` remains a single mounted root while state changes rerender the viewport.
+- Verify the header remains 32px tall and the Windows/Mac work areas begin at 32px.
+- Verify right-side controls reserve stable geometry when OS flavor or dimensions change.
+- Verify drag clamping keeps window title bars below the header.
 
 ## Change history
 
@@ -205,3 +219,8 @@ Before reporting completion for a change:
 - Browser automation remained unavailable, so refresh-based localStorage and visual drag/minimize/maximize interaction checks remain an explicit limitation.
 - Added a Mac minimize control with desktop-icon restoration so both OS flavors support minimize, restore, maximize, close, dragging, and focus promotion.
 - Final verification after the Mac minimize change: `npm run build` passed; portfolio, Idea-Board proxy, and proxy API each returned HTTP 200; service logs showed no compile or startup errors.
+- User approved extracting a permanently fixed unified Header component for all top navigation and global controls.
+- Added `src/components/Header.jsx` and stable `header-root`, `viewport-root`, and `dialog-root` render regions so OS and dimension switches no longer replace the header node.
+- Added fixed 32px header geometry, fixed Windows work area/taskbar offsets, fixed Mac work area offset, stable-width clock, reserved OS switcher geometry, and header-safe window dragging.
+- Verification evidence: `npm run build` passed; portfolio and Idea-Board proxy/API returned HTTP 200; source checks found the dedicated Header component, fixed geometry, stable render regions, and no stale runtime header render helpers.
+- Browser automation remained unavailable, so repeated visual OS-switch and drag-boundary checks remain an explicit limitation.

@@ -9,6 +9,16 @@ This repository must remain the only application path modified by portfolio work
 Idea-Board's nested server remains on internal port `3000`. The tracked `scripts/start-idea-board.mjs` launcher exposes it through a public proxy on port `5000`, which is the URL used by both OS flavors.
 
 Theme #1 defaults to Windows 95. Use the global OS Flavor switcher to change to Classic Mac System 7. The selected flavor persists in browser `localStorage` under `retro_os_flavor`.
+
+## Unified header layout
+
+`src/components/Header.jsx` owns the fixed 32px header, Mac menus, branding, OS flavor switcher, dimension switcher, Recruiter Quick View control, and stable-width live clock. The header root remains mounted while desktop and dialog regions rerender.
+
+Windows work area: `top: 32px`, `bottom: 28px`.
+
+Mac work area: `top: 32px`, `bottom: 0`.
+
+Window dragging is clamped below the fixed header. Keep the header root outside OS-specific desktop markup when extending the UI.
 ## Prerequisites
 
 - Node.js 20 or newer
