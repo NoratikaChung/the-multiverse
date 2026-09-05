@@ -3,6 +3,7 @@ import { createHeader, updateHeader } from './components/Header.jsx';
 import profile from './data/profile.json';
 import career from './data/career.json';
 import projects from './data/projects.json';
+import { createThreeDDesk } from './themes/ThreeDDesk.jsx';
 
 const app = document.querySelector('#app');
 const ideaBoard = projects.find((project) => project.id === 'idea-board');
@@ -23,6 +24,7 @@ const state = {
   positions: {},
   notice: '',
 };
+let threeDDesk;
 let headerElement;
 
 const macCatalog = {
@@ -221,6 +223,7 @@ function currentClockText() {
 
 function render() {
   const isRetro = state.theme === 'retro';
+  const isThreeDDesk = state.theme === 'desk';
   let shell = app.querySelector('.site-shell');
   if (!shell) {
     shell = document.createElement('div');
@@ -233,7 +236,18 @@ function render() {
   shell.dataset.theme = state.theme;
   updateHeader(headerElement, { currentTheme: state.theme, osFlavor: state.osFlavor, menu: state.menu, clockText: currentClockText() });
   const viewport = shell.querySelector('.viewport-root');
-  viewport.innerHTML = isRetro ? (state.osFlavor === 'win95' ? renderWin95() : renderMac()) : `<main class="construction-screen"><div class="construction-card"><p class="document-kicker">DIMENSION ${escapeHtml(state.theme.toUpperCase())}</p><h1>Dimension under construction</h1><p>Switch to Retro OS to experience the active theme.</p><button class="retro-button primary" data-action="theme" data-theme="retro" type="button">Return to Retro OS</button></div></main>`;
+  if (isThreeDDesk) {
+    if (!threeDDesk) {
+      viewport.innerHTML = '<main class="three-desk-viewport" aria-label="Three-dimensional developer desk"><div class="three-desk-mount"></div></main>';
+      threeDDesk = createThreeDDesk({ container: viewport.querySelector('.three-desk-mount'), profile, career, ideaBoard });
+    }
+  } else {
+    if (threeDDesk) {
+      threeDDesk.dispose();
+      threeDDesk = undefined;
+    }
+    viewport.innerHTML = isRetro ? (state.osFlavor === 'win95' ? renderWin95() : renderMac()) : `<main class="construction-screen"><div class="construction-card"><p class="document-kicker">DIMENSION ${escapeHtml(state.theme.toUpperCase())}</p><h1>Dimension under construction</h1><p>Switch to Retro OS to experience the active theme.</p><button class="retro-button primary" data-action="theme" data-theme="retro" type="button">Return to Retro OS</button></div></main>`;
+  }
   shell.querySelector('.dialog-root').innerHTML = renderDialogs();
   updateClock();
   bindWindowInteractions();

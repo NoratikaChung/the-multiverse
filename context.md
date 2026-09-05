@@ -70,6 +70,8 @@ The latest dual-OS requirement explicitly changed the public Idea-Board URL to p
 - `src/data/career.json`: career and project experience entries.
 - `src/data/projects.json`: interactive project metadata, with Idea-Board first and public URL on port `5000`.
 - `scripts/start-idea-board.mjs`: starts the ignored Idea-Board checkout on port `3000` and proxies it to public port `5000`.
+- `src/themes/ThreeDDesk.jsx`: framework-free Three.js scene with OrbitControls, procedural desk objects, raycasting, data-driven inspection overlays, camera focus transitions, and explicit disposal.
+- `three`: runtime dependency used by Theme #2; the 3D theme is mounted only for `state.theme === 'desk'` and disposed before leaving it.
 - `public/resume-placeholder.pdf`: temporary download asset until the user supplies a real CV.
 - `public/screenshots/project-placeholder.svg`: legacy career-art asset; remove or stop using it when no longer needed.
 - `NOTES.md`: setup and launch instructions for developers.
@@ -159,6 +161,20 @@ Icon labels use a pixel-friendly font and white text with a crisp black outline.
 - Idea-Board.app wraps an iframe to the public proxy at `http://localhost:5000`; the nested upstream remains on `http://localhost:3000`.
 - Recruiter Quick View is modern, high-contrast, one-page, data-driven, and includes a prominent CV download button.
 
+### Three-dimensional desk requirements
+
+- Theme #2 is mounted inside the existing `viewport-root` beneath the fixed 32px Header.
+- `src/themes/ThreeDDesk.jsx` owns its Three.js scene, renderer, OrbitControls, animation frame, listeners, raycaster, tooltip, and object-detail modal.
+- Interactive objects use `userData` metadata and are data-backed by `profile.json`, `career.json`, and the first `projects.json` entry.
+- Monitor opens Idea-Board at `http://localhost:5000`; corkboard opens career history; notebook opens profile data; printer downloads `/resume-placeholder.pdf`; mug opens contact links.
+- Leaving Theme #2 cancels animation, disposes controls, renderer, geometries, materials, textures, and listeners, then clears the mount.
+
+### Three-dimensional desk accessibility
+
+- The Reset View and modal controls are semantic keyboard controls.
+- Object meaning is exposed through the visible HUD tooltip and modal headings; pointer hover is supplemental feedback.
+- The Idea-Board iframe has a descriptive title, and Escape closes object-detail overlays.
+
 ## Accessibility and interaction requirements
 
 - Prefer semantic buttons, links, headings, landmarks, and native dialog behavior.
@@ -187,6 +203,9 @@ Before reporting completion for a change:
 - Verify the header remains 32px tall and the Windows/Mac work areas begin at 32px.
 - Verify right-side controls reserve stable geometry when OS flavor or dimensions change.
 - Verify drag clamping keeps window title bars below the header.
+- Verify Theme #2 mounts beneath the Header, marks `3D Desk` active, and does not remount during recruiter dialog updates.
+- Verify leaving and re-entering Theme #2 calls Three.js cleanup and creates a fresh renderer and animation loop.
+- Verify raycast object metadata covers monitor, corkboard, notebook, printer, and contact interactions.
 
 ## Change history
 
@@ -224,3 +243,7 @@ Before reporting completion for a change:
 - Added fixed 32px header geometry, fixed Windows work area/taskbar offsets, fixed Mac work area offset, stable-width clock, reserved OS switcher geometry, and header-safe window dragging.
 - Verification evidence: `npm run build` passed; portfolio and Idea-Board proxy/API returned HTTP 200; source checks found the dedicated Header component, fixed geometry, stable render regions, and no stale runtime header render helpers.
 - Browser automation remained unavailable, so repeated visual OS-switch and drag-boundary checks remain an explicit limitation.
+- User approved Theme #2 implementation using Three.js and native OrbitControls.
+- Added `three` and implemented `src/themes/ThreeDDesk.jsx` with procedural low-poly desk objects, raycast hover feedback, camera focus transitions, object overlays, direct CV download, Idea-Board iframe launch, and explicit disposal.
+- Integrated Theme #2 through the stable `viewport-root`; recruiter quick view continues to rerender only `dialog-root` while the desk scene remains mounted.
+- Added responsive 3D desk HUD, modal, tooltip, and reset-view styling.

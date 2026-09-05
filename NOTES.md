@@ -19,6 +19,20 @@ Windows work area: `top: 32px`, `bottom: 28px`.
 Mac work area: `top: 32px`, `bottom: 0`.
 
 Window dragging is clamped below the fixed header. Keep the header root outside OS-specific desktop markup when extending the UI.
+
+## Theme #2: Interactive 3D Desk
+
+The `3D Desk` dimension is implemented in `src/themes/ThreeDDesk.jsx` using Three.js and native `OrbitControls`. It mounts beneath the persistent 32px Header and builds the room, desk, monitor, career corkboard, profile notebook, printer, and contact mug procedurally.
+
+Select an object to focus the camera and open its detail overlay:
+
+- Monitor: launches Idea-Board in an iframe at `http://localhost:5000`.
+- Corkboard: displays the career timeline from `src/data/career.json`.
+- Notebook: displays education, awards, and skills from `src/data/profile.json`.
+- Printer: triggers the placeholder CV download and shows a download control.
+- Mug: displays email, GitHub, and LinkedIn links.
+
+Use `Reset View` to return to the overview camera. Leaving the dimension explicitly disposes the renderer, controls, scene resources, listeners, and animation frame before another theme is rendered.
 ## Prerequisites
 
 - Node.js 20 or newer
