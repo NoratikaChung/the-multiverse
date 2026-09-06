@@ -27,7 +27,7 @@
 
 The Multiverse is a multi-theme developer portfolio with an interactive project showcase. Stage 1 uses a Vite vanilla JavaScript application and a nested Idea-Board application.
 
-Theme #1 now supports two retro operating-system flavors: Windows 95/98 as the default and the preserved Classic Macintosh System 7.5.3 / Platinum experience. Theme #2 is the interactive Three.js developer desk, Theme #3 is the procedural 2D Pixel RPG overworld, Theme #4 is the Watercolor Sketchbook, and only the Cyber HUD dimension remains a construction placeholder unless a later request expands it.
+- Theme #1 now supports two retro operating-system flavors: Windows 95/98 as the default and the preserved Classic Macintosh System 7.5.3 / Platinum experience. Theme #2 is the interactive Three.js developer desk, Theme #3 is the procedural 2D Pixel RPG overworld, Theme #4 is the Watercolor Sketchbook, and Theme #5 is the functional Cyberpunk Hologram HUD.
 
 The OS flavor is persisted in `localStorage` under `retro_os_flavor`. A first visit defaults to `win95`; switching between `win95` and `mac` happens without a page reload.
 
@@ -74,6 +74,7 @@ The latest dual-OS requirement explicitly changed the public Idea-Board URL to p
 - `three`: runtime dependency used by Theme #2; the 3D theme is mounted only for `state.theme === 'desk'` and disposed before leaving it.
 - `src/themes/PixelRPG.jsx`: procedural Canvas 2D overworld with tile collision, keyboard/pointer/touch controls, NPC and building interactions, typewriter dialogue, location banners, data-driven overlays, and explicit disposal.
 - `src/themes/WatercolorSketchbook.jsx`: DOM-based watercolor sketchbook with four data-driven spreads, bookmark and Prev/Next navigation, Idea-Board iframe, CV download, watercolor doodler, page-turn animation, and explicit disposal.
+- `src/themes/CyberHUD.jsx`: framework-free Cyberpunk HUD with Canvas telemetry, data-driven career terminal tabs, Idea-Board hologram frame, CV extraction progress, contact uplinks, native Web Audio toggle, pointer response, reduced-motion handling, and explicit disposal.
 - `vite.config.js`: intentional Three.js vendor chunking and a 600 kB warning threshold for the existing Three.js runtime payload.
 - `public/resume-placeholder.pdf`: temporary download asset until the user supplies a real CV.
 - `public/screenshots/project-placeholder.svg`: legacy career-art asset; remove or stop using it when no longer needed.
@@ -243,7 +244,11 @@ Before reporting completion for a change:
 - Verify all four bookmark tabs and Prev/Next controls update the active spread and page-turn state.
 - Verify profile, awards, skills, career, Idea-Board, CV, and contact content use the existing data and URLs.
 - Verify leaving and re-entering Theme #4 removes delegated pointer/click listeners and all page/doodler timers.
-- Verify `npm run build` emits no bundler warning after intentional Three.js vendor chunking.
+- Verify Theme #5 mounts beneath the Header, marks `Cyber HUD` active, and does not remount during recruiter dialog updates.
+- Verify all four career archive tabs reveal the corresponding `src/data/career.json` record and the Micron archive exposes the 87% metric.
+- Verify the Cyber HUD Idea-Board simulation frame uses `http://localhost:5000`, expands and collapses without losing the iframe, and remains responsive on narrow viewports.
+- Verify CV extraction progress, contact links, audio toggle state, pointer response, and reduced-motion behavior.
+- Verify leaving and re-entering Theme #5 removes its canvas animation, pointer/click listeners, terminal/download timers, and audio context.
 
 ## Change history
 
@@ -291,3 +296,6 @@ Before reporting completion for a change:
 - User approved Theme #4 implementation as a Watercolor Sketchbook and directed all development to continue on `main`.
 - Added `src/themes/WatercolorSketchbook.jsx` with four data-driven spreads, watercolor DOM styling, bookmark and Prev/Next navigation, Idea-Board embedding, CV download, postcard contact links, doodler canvas, page-turn animation, and explicit disposal.
 - Integrated Theme #4 through the stable `viewport-root`, added responsive sketchbook styling, and configured `vite.config.js` for the existing Three.js vendor chunk.
+- User approved Theme #5 as a Sci-Fi Cyberpunk Hologram HUD and directed development to continue directly on `main`.
+- Added `src/themes/CyberHUD.jsx` with Canvas wireframe telemetry, pointer-reactive particles, data-driven pilot/career panels, Idea-Board simulation frame, contact uplinks, CV extraction progress, optional native Web Audio, reduced-motion handling, and explicit disposal.
+- Integrated Theme #5 through the stable `viewport-root`; all theme transitions dispose prior interactive instances while recruiter quick view continues to rerender only `dialog-root`.

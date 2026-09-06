@@ -5,7 +5,7 @@ import career from './data/career.json';
 import projects from './data/projects.json';
 import { createPixelRPG } from './themes/PixelRPG.jsx';
 import { createWatercolorSketchbook } from './themes/WatercolorSketchbook.jsx';
-import { createThreeDDesk } from './themes/ThreeDDesk.jsx';
+import { createCyberHUD } from './themes/CyberHUD.jsx';
 
 const app = document.querySelector('#app');
 const ideaBoard = projects.find((project) => project.id === 'idea-board');
@@ -29,6 +29,7 @@ const state = {
 let threeDDesk;
 let pixelRPG;
 let watercolorSketchbook;
+let cyberHUD;
 let headerElement;
 
 const macCatalog = {
@@ -230,6 +231,7 @@ function render() {
   const isThreeDDesk = state.theme === 'desk';
   const isPixelRPG = state.theme === 'rpg';
   const isSketchbook = state.theme === 'sketch';
+  const isCyberHUD = state.theme === 'hud';
   let shell = app.querySelector('.site-shell');
   if (!shell) {
     shell = document.createElement('div');
@@ -251,6 +253,10 @@ function render() {
       pixelRPG.dispose();
       pixelRPG = undefined;
     }
+    if (cyberHUD) {
+      cyberHUD.dispose();
+      cyberHUD = undefined;
+    }
     if (!watercolorSketchbook) {
       viewport.innerHTML = '<main class="sketchbook-viewport" aria-label="Watercolor sketchbook portfolio"><div class="sketchbook-mount"></div></main>';
       watercolorSketchbook = createWatercolorSketchbook({ container: viewport.querySelector('.sketchbook-mount'), profile, career, projects });
@@ -263,6 +269,10 @@ function render() {
     if (watercolorSketchbook) {
       watercolorSketchbook.dispose();
       watercolorSketchbook = undefined;
+    }
+    if (cyberHUD) {
+      cyberHUD.dispose();
+      cyberHUD = undefined;
     }
     if (!pixelRPG) {
       viewport.innerHTML = '<main class="pixel-rpg-viewport" aria-label="Nora\'s Realm 2D pixel RPG"><div class="pixel-rpg-mount"></div></main>';
@@ -277,9 +287,30 @@ function render() {
       watercolorSketchbook.dispose();
       watercolorSketchbook = undefined;
     }
+    if (cyberHUD) {
+      cyberHUD.dispose();
+      cyberHUD = undefined;
+    }
     if (!threeDDesk) {
       viewport.innerHTML = '<main class="three-desk-viewport" aria-label="Three-dimensional developer desk"><div class="three-desk-mount"></div></main>';
       threeDDesk = createThreeDDesk({ container: viewport.querySelector('.three-desk-mount'), profile, career, ideaBoard });
+    }
+  } else if (isCyberHUD) {
+    if (threeDDesk) {
+      threeDDesk.dispose();
+      threeDDesk = undefined;
+    }
+    if (pixelRPG) {
+      pixelRPG.dispose();
+      pixelRPG = undefined;
+    }
+    if (watercolorSketchbook) {
+      watercolorSketchbook.dispose();
+      watercolorSketchbook = undefined;
+    }
+    if (!cyberHUD) {
+      viewport.innerHTML = '<main class="cyber-hud-viewport" aria-label="Cyberpunk hologram portfolio"><div class="cyber-hud-mount"></div></main>';
+      cyberHUD = createCyberHUD({ container: viewport.querySelector('.cyber-hud-mount'), profile, career, ideaBoard });
     }
   } else {
     if (threeDDesk) {
@@ -293,6 +324,10 @@ function render() {
     if (watercolorSketchbook) {
       watercolorSketchbook.dispose();
       watercolorSketchbook = undefined;
+    }
+    if (cyberHUD) {
+      cyberHUD.dispose();
+      cyberHUD = undefined;
     }
     viewport.innerHTML = isRetro ? (state.osFlavor === 'win95' ? renderWin95() : renderMac()) : `<main class="construction-screen"><div class="construction-card"><p class="document-kicker">DIMENSION ${escapeHtml(state.theme.toUpperCase())}</p><h1>Dimension under construction</h1><p>Switch to Retro OS to experience the active theme.</p><button class="retro-button primary" data-action="theme" data-theme="retro" type="button">Return to Retro OS</button></div></main>`;
   }
