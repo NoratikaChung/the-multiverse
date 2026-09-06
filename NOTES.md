@@ -46,6 +46,19 @@ Controls:
 - On-screen D-pad and `A / Action`: touch-friendly movement and interaction.
 
 Explore the Grand Archives for career history, the Pixel Arcade for Idea-Board, the Wizard's Academy for profile data, the Town Courier for the CV download, and the Communication Beacon outside Nora's Cottage for contact links. The game loop and all keyboard, pointer, and touch listeners are disposed when changing dimensions.
+
+## Theme #4: Watercolor Sketchbook
+
+The `Sketchbook` dimension is implemented in `src/themes/WatercolorSketchbook.jsx`. It presents the portfolio as an open field journal on a warm drafting table, using CSS textures, watercolor washes, hand-drawn cards, bookmark ribbons, and responsive paper spreads.
+
+The four spreads are:
+
+- Story & Bio: profile, biography, education, honors, skills, and CV download.
+- Career Notes: all records from `src/data/career.json`, including the Micron 87% metric.
+- The Lab: embedded Idea-Board plus a 200×200 watercolor doodler.
+- Postcard: direct email, GitHub, and LinkedIn links.
+
+Use the bookmark ribbons or Prev/Next controls to navigate. The theme removes its delegated controls and doodler/page timers when switching dimensions.
 ## Prerequisites
 
 - Node.js 20 or newer

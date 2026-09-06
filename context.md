@@ -27,7 +27,7 @@
 
 The Multiverse is a multi-theme developer portfolio with an interactive project showcase. Stage 1 uses a Vite vanilla JavaScript application and a nested Idea-Board application.
 
-Theme #1 now supports two retro operating-system flavors: Windows 95/98 as the default and the preserved Classic Macintosh System 7.5.3 / Platinum experience. Theme #2 is the interactive Three.js developer desk, Theme #3 is the procedural 2D Pixel RPG overworld, and the Sketchbook and Cyber HUD dimensions remain construction placeholders unless a later request expands them.
+Theme #1 now supports two retro operating-system flavors: Windows 95/98 as the default and the preserved Classic Macintosh System 7.5.3 / Platinum experience. Theme #2 is the interactive Three.js developer desk, Theme #3 is the procedural 2D Pixel RPG overworld, Theme #4 is the Watercolor Sketchbook, and only the Cyber HUD dimension remains a construction placeholder unless a later request expands it.
 
 The OS flavor is persisted in `localStorage` under `retro_os_flavor`. A first visit defaults to `win95`; switching between `win95` and `mac` happens without a page reload.
 
@@ -73,6 +73,8 @@ The latest dual-OS requirement explicitly changed the public Idea-Board URL to p
 - `src/themes/ThreeDDesk.jsx`: framework-free Three.js scene with OrbitControls, procedural desk objects, raycasting, data-driven inspection overlays, camera focus transitions, and explicit disposal.
 - `three`: runtime dependency used by Theme #2; the 3D theme is mounted only for `state.theme === 'desk'` and disposed before leaving it.
 - `src/themes/PixelRPG.jsx`: procedural Canvas 2D overworld with tile collision, keyboard/pointer/touch controls, NPC and building interactions, typewriter dialogue, location banners, data-driven overlays, and explicit disposal.
+- `src/themes/WatercolorSketchbook.jsx`: DOM-based watercolor sketchbook with four data-driven spreads, bookmark and Prev/Next navigation, Idea-Board iframe, CV download, watercolor doodler, page-turn animation, and explicit disposal.
+- `vite.config.js`: intentional Three.js vendor chunking and a 600 kB warning threshold for the existing Three.js runtime payload.
 - `public/resume-placeholder.pdf`: temporary download asset until the user supplies a real CV.
 - `public/screenshots/project-placeholder.svg`: legacy career-art asset; remove or stop using it when no longer needed.
 - `NOTES.md`: setup and launch instructions for developers.
@@ -190,6 +192,18 @@ Icon labels use a pixel-friendly font and white text with a crisp black outline.
 - Dialogue and modal overlays move focus to their controls, cycle Tab focus within the active overlay, close with Escape, and restore focus to the opening control.
 - Canvas-only state is supplemented with live status text and visible HTML HUD controls.
 
+### Watercolor Sketchbook requirements
+
+- Theme #4 mounts inside the existing `viewport-root` beneath the fixed 32px Header and uses CSS gradients and DOM/SVG-like primitives rather than external image assets.
+- `src/themes/WatercolorSketchbook.jsx` owns the drafting desk shell, sketchbook spreads, navigation state, page-turn timer, doodler canvas, doodler timers, and event listeners.
+- Story, honors, career notes, lab, Idea-Board, CV, and postcard content are data-bound to the existing profile, career, projects, and public asset contracts.
+- Leaving Theme #4 clears page-turn and doodler timers, removes delegated pointer/click listeners, and clears the mount.
+
+### Watercolor Sketchbook accessibility
+
+- Bookmark tabs, page navigation, CV download, Idea-Board links, and contact links use semantic buttons or anchors with visible focus states.
+- Active spread tabs expose `aria-current`, spread changes are announced through a live status region, and reduced-motion removes the page-turn animation.
+
 ## Accessibility and interaction requirements
 
 - Prefer semantic buttons, links, headings, landmarks, and native dialog behavior.
@@ -225,6 +239,11 @@ Before reporting completion for a change:
 - Verify player keyboard, pointer path, touch, and D-pad controls respect collision boundaries.
 - Verify Archive, Arcade, Academy, Courier, and Communication Beacon interactions use the expected data and URLs.
 - Verify leaving and re-entering Theme #3 removes its animation, keyboard, pointer, and touch listeners and creates a fresh game loop.
+- Verify Theme #4 mounts beneath the Header, marks `Sketchbook` active, and does not remount during recruiter dialog updates.
+- Verify all four bookmark tabs and Prev/Next controls update the active spread and page-turn state.
+- Verify profile, awards, skills, career, Idea-Board, CV, and contact content use the existing data and URLs.
+- Verify leaving and re-entering Theme #4 removes delegated pointer/click listeners and all page/doodler timers.
+- Verify `npm run build` emits no bundler warning after intentional Three.js vendor chunking.
 
 ## Change history
 
@@ -269,3 +288,6 @@ Before reporting completion for a change:
 - User approved Theme #3 implementation as a procedural HTML5 Canvas 2D Pixel RPG overworld.
 - Added `src/themes/PixelRPG.jsx` with Nora's Realm map, procedural buildings and sprites, camera follow, collision, keyboard/pointer/touch movement, courier NPC, interaction prompts, typewriter dialogue, location banners, data-driven overlays, and explicit disposal.
 - Integrated Theme #3 through the stable `viewport-root` and added responsive pixel RPG HUD, D-pad, Action button, dialogue, and modal styling.
+- User approved Theme #4 implementation as a Watercolor Sketchbook and directed all development to continue on `main`.
+- Added `src/themes/WatercolorSketchbook.jsx` with four data-driven spreads, watercolor DOM styling, bookmark and Prev/Next navigation, Idea-Board embedding, CV download, postcard contact links, doodler canvas, page-turn animation, and explicit disposal.
+- Integrated Theme #4 through the stable `viewport-root`, added responsive sketchbook styling, and configured `vite.config.js` for the existing Three.js vendor chunk.

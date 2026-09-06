@@ -4,6 +4,7 @@ import profile from './data/profile.json';
 import career from './data/career.json';
 import projects from './data/projects.json';
 import { createPixelRPG } from './themes/PixelRPG.jsx';
+import { createWatercolorSketchbook } from './themes/WatercolorSketchbook.jsx';
 import { createThreeDDesk } from './themes/ThreeDDesk.jsx';
 
 const app = document.querySelector('#app');
@@ -27,6 +28,7 @@ const state = {
 };
 let threeDDesk;
 let pixelRPG;
+let watercolorSketchbook;
 let headerElement;
 
 const macCatalog = {
@@ -227,6 +229,7 @@ function render() {
   const isRetro = state.theme === 'retro';
   const isThreeDDesk = state.theme === 'desk';
   const isPixelRPG = state.theme === 'rpg';
+  const isSketchbook = state.theme === 'sketch';
   let shell = app.querySelector('.site-shell');
   if (!shell) {
     shell = document.createElement('div');
@@ -239,10 +242,27 @@ function render() {
   shell.dataset.theme = state.theme;
   updateHeader(headerElement, { currentTheme: state.theme, osFlavor: state.osFlavor, menu: state.menu, clockText: currentClockText() });
   const viewport = shell.querySelector('.viewport-root');
-  if (isPixelRPG) {
+  if (isSketchbook) {
     if (threeDDesk) {
       threeDDesk.dispose();
       threeDDesk = undefined;
+    }
+    if (pixelRPG) {
+      pixelRPG.dispose();
+      pixelRPG = undefined;
+    }
+    if (!watercolorSketchbook) {
+      viewport.innerHTML = '<main class="sketchbook-viewport" aria-label="Watercolor sketchbook portfolio"><div class="sketchbook-mount"></div></main>';
+      watercolorSketchbook = createWatercolorSketchbook({ container: viewport.querySelector('.sketchbook-mount'), profile, career, projects });
+    }
+  } else if (isPixelRPG) {
+    if (threeDDesk) {
+      threeDDesk.dispose();
+      threeDDesk = undefined;
+    }
+    if (watercolorSketchbook) {
+      watercolorSketchbook.dispose();
+      watercolorSketchbook = undefined;
     }
     if (!pixelRPG) {
       viewport.innerHTML = '<main class="pixel-rpg-viewport" aria-label="Nora\'s Realm 2D pixel RPG"><div class="pixel-rpg-mount"></div></main>';
@@ -252,6 +272,10 @@ function render() {
     if (pixelRPG) {
       pixelRPG.dispose();
       pixelRPG = undefined;
+    }
+    if (watercolorSketchbook) {
+      watercolorSketchbook.dispose();
+      watercolorSketchbook = undefined;
     }
     if (!threeDDesk) {
       viewport.innerHTML = '<main class="three-desk-viewport" aria-label="Three-dimensional developer desk"><div class="three-desk-mount"></div></main>';
@@ -265,6 +289,10 @@ function render() {
     if (pixelRPG) {
       pixelRPG.dispose();
       pixelRPG = undefined;
+    }
+    if (watercolorSketchbook) {
+      watercolorSketchbook.dispose();
+      watercolorSketchbook = undefined;
     }
     viewport.innerHTML = isRetro ? (state.osFlavor === 'win95' ? renderWin95() : renderMac()) : `<main class="construction-screen"><div class="construction-card"><p class="document-kicker">DIMENSION ${escapeHtml(state.theme.toUpperCase())}</p><h1>Dimension under construction</h1><p>Switch to Retro OS to experience the active theme.</p><button class="retro-button primary" data-action="theme" data-theme="retro" type="button">Return to Retro OS</button></div></main>`;
   }
