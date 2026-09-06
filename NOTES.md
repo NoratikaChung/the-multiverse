@@ -59,13 +59,11 @@ The four spreads are:
 - Postcard: direct email, GitHub, and LinkedIn links.
 
 Use the bookmark ribbons or Prev/Next controls to navigate. The theme removes its delegated controls and doodler/page timers when switching dimensions.
-## Theme #5: Cyberpunk Hologram HUD
+## Theme #5: Neural Core
 
-The `Cyber HUD` dimension is implemented in `src/themes/CyberHUD.jsx` as a framework-free tactical interface. It uses the verified profile and career JSON data for the pilot readouts, skill signal bars, career archive tabs, terminal typewriter output, Idea-Board simulation frame, contact channels, and CV extraction flow.
+The `Neural Core` dimension is implemented in `src/themes/NeuralCore.jsx` as an open orbital node map floating in a deep obsidian void. A Canvas-rendered rotating icosahedron and drifting data particles provide the ambient field; four semantic satellite buttons expose focused channels for identity, missions, Idea-Board, and data uplink.
 
-The canvas background draws a perspective wireframe grid and deterministic telemetry particles. Pointer movement changes the ambient hologram field through CSS variables. Native Web Audio effects default to `OFF` and are enabled explicitly through the HUD toggle; `dispose()` removes listeners, timers, the animation frame, and the audio context when changing dimensions.
-
-The Idea-Board frame uses the public proxy at `http://localhost:5000`, matching the other themes. The frame can expand into a responsive holographic simulation mode without replacing the persistent Header or recruiter dialog root.
+Each channel opens one spacious frosted holographic slate and returns to the ambient orbit with `[ ⨉ RETURN TO ORBIT ]`. All content uses the verified profile, career, project, and CV data. The component preserves native Web Audio hover/click effects, keyboard operation, reduced-motion behavior, and explicit disposal of listeners, animation frames, timers, and audio context.
 ## Prerequisites
 
 - Node.js 20 or newer

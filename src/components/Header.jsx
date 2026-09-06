@@ -3,7 +3,7 @@ const dimensions = [
   ['desk', '3D Desk'],
   ['rpg', 'Pixel RPG'],
   ['sketch', 'Sketchbook'],
-  ['hud', 'Cyber HUD'],
+  ['hud', '🌐 Neural Core'],
 ];
 
 const escapeHtml = (value) => String(value)

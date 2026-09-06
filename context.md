@@ -27,7 +27,7 @@
 
 The Multiverse is a multi-theme developer portfolio with an interactive project showcase. Stage 1 uses a Vite vanilla JavaScript application and a nested Idea-Board application.
 
-- Theme #1 now supports two retro operating-system flavors: Windows 95/98 as the default and the preserved Classic Macintosh System 7.5.3 / Platinum experience. Theme #2 is the interactive Three.js developer desk, Theme #3 is the procedural 2D Pixel RPG overworld, Theme #4 is the Watercolor Sketchbook, and Theme #5 is the functional Cyberpunk Hologram HUD.
+- Theme #1 now supports two retro operating-system flavors: Windows 95/98 as the default and the preserved Classic Macintosh System 7.5.3 / Platinum experience. Theme #2 is the interactive Three.js developer desk, Theme #3 is the procedural 2D Pixel RPG overworld, Theme #4 is the Watercolor Sketchbook, and Theme #5 is the functional Neural Core orbital node map.
 
 The OS flavor is persisted in `localStorage` under `retro_os_flavor`. A first visit defaults to `win95`; switching between `win95` and `mac` happens without a page reload.
 
@@ -74,7 +74,7 @@ The latest dual-OS requirement explicitly changed the public Idea-Board URL to p
 - `three`: runtime dependency used by Theme #2; the 3D theme is mounted only for `state.theme === 'desk'` and disposed before leaving it.
 - `src/themes/PixelRPG.jsx`: procedural Canvas 2D overworld with tile collision, keyboard/pointer/touch controls, NPC and building interactions, typewriter dialogue, location banners, data-driven overlays, and explicit disposal.
 - `src/themes/WatercolorSketchbook.jsx`: DOM-based watercolor sketchbook with four data-driven spreads, bookmark and Prev/Next navigation, Idea-Board iframe, CV download, watercolor doodler, page-turn animation, and explicit disposal.
-- `src/themes/CyberHUD.jsx`: framework-free Cyberpunk HUD with Canvas telemetry, data-driven career terminal tabs, Idea-Board hologram frame, CV extraction progress, contact uplinks, native Web Audio toggle, pointer response, reduced-motion handling, and explicit disposal.
+- `src/themes/NeuralCore.jsx`: framework-free orbital Canvas node map with rotating icosahedron, ambient particles, semantic satellite buttons, focused profile/career/Idea-Board/CV slates, native Web Audio, reduced-motion handling, and explicit disposal.
 - `vite.config.js`: intentional Three.js vendor chunking and a 600 kB warning threshold for the existing Three.js runtime payload.
 - `public/resume-placeholder.pdf`: temporary download asset until the user supplies a real CV.
 - `public/screenshots/project-placeholder.svg`: legacy career-art asset; remove or stop using it when no longer needed.
@@ -244,11 +244,10 @@ Before reporting completion for a change:
 - Verify all four bookmark tabs and Prev/Next controls update the active spread and page-turn state.
 - Verify profile, awards, skills, career, Idea-Board, CV, and contact content use the existing data and URLs.
 - Verify leaving and re-entering Theme #4 removes delegated pointer/click listeners and all page/doodler timers.
-- Verify Theme #5 mounts beneath the Header, marks `Cyber HUD` active, and does not remount during recruiter dialog updates.
-- Verify all four career archive tabs reveal the corresponding `src/data/career.json` record and the Micron archive exposes the 87% metric.
-- Verify the Cyber HUD Idea-Board simulation frame uses `http://localhost:5000`, expands and collapses without losing the iframe, and remains responsive on narrow viewports.
-- Verify CV extraction progress, contact links, audio toggle state, pointer response, and reduced-motion behavior.
-- Verify leaving and re-entering Theme #5 removes its canvas animation, pointer/click listeners, terminal/download timers, and audio context.
+- Verify Theme #5 mounts beneath the Header, marks `🌐 Neural Core` active, and does not remount during recruiter dialog updates.
+- Verify all four orbital nodes open the correct focused slate with the corresponding profile, career, Idea-Board, contact, and CV data.
+- Verify the orbital view removes the crowded 2×2 grid, preserves generous negative space, and keeps the core, satellites, vector lines, and particle field responsive.
+- Verify `[ ⨉ RETURN TO ORBIT ]`, Escape, keyboard node activation, audio toggle, hover/click effects, reduced motion, and disposal behavior.
 
 ## Change history
 
@@ -300,3 +299,6 @@ Before reporting completion for a change:
 - Added `src/themes/CyberHUD.jsx` with Canvas wireframe telemetry, pointer-reactive particles, data-driven pilot/career panels, Idea-Board simulation frame, contact uplinks, CV extraction progress, optional native Web Audio, reduced-motion handling, and explicit disposal.
 - Integrated Theme #5 through the stable `viewport-root`; all theme transitions dispose prior interactive instances while recruiter quick view continues to rerender only `dialog-root`.
 - Restored the `createThreeDDesk` import in `src/main.js` after the Cyber HUD integration accidentally replaced it; the desk branch now resolves its exported factory again. The regression build restored the non-empty `three-vendor` chunk at 517.63 kB.
+- User approved replacing Theme #5's crowded Cyber HUD with the Neural Core orbital node map.
+- Added `src/themes/NeuralCore.jsx` with a Canvas-rendered rotating icosahedron, drifting particles, four semantic satellite nodes, focused holographic slates, Idea-Board chamber, profile/career/CV data, native Web Audio, keyboard operation, reduced-motion handling, and explicit disposal.
+- Replaced the Cyber HUD styles and implementation, renamed the dimension switcher label to `🌐 Neural Core`, and retained the existing `hud` theme identifier and stable `viewport-root` lifecycle.
