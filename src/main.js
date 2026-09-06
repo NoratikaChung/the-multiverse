@@ -16,7 +16,7 @@ const storedOsFlavor = window.localStorage.getItem('retro_os_flavor');
 
 const state = {
   osFlavor: validOsFlavors.includes(storedOsFlavor) ? storedOsFlavor : 'win95',
-  theme: 'retro',
+  theme: 'rpg',
   menu: null,
   startMenu: false,
   quickView: false,

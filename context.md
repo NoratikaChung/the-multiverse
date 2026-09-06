@@ -27,7 +27,7 @@
 
 The Multiverse is a multi-theme developer portfolio with an interactive project showcase. Stage 1 uses a Vite vanilla JavaScript application and a nested Idea-Board application.
 
-- Theme #1 now supports two retro operating-system flavors: Windows 95/98 as the default and the preserved Classic Macintosh System 7.5.3 / Platinum experience. Theme #2 is the interactive Three.js developer desk, Theme #3 is the procedural 2D Pixel RPG overworld, Theme #4 is the Watercolor Sketchbook, Theme #5 is the functional Neural Core orbital node map, and Theme #6 is the Megastructure Elevator vertical parallax journey.
+- Pixel RPG is the default landing dimension. Theme #1 supports two retro operating-system flavors: Windows 95/98 and the preserved Classic Macintosh System 7.5.3 / Platinum experience. Theme #2 is the interactive Three.js developer desk, Theme #3 is the procedural 2D Pixel RPG overworld, Theme #4 is the Watercolor Sketchbook, Theme #5 is the functional Neural Core orbital node map, and Theme #6 is the Megastructure Elevator vertical parallax journey.
 
 The OS flavor is persisted in `localStorage` under `retro_os_flavor`. A first visit defaults to `win95`; switching between `win95` and `mac` happens without a page reload.
 
@@ -310,3 +310,4 @@ Before reporting completion for a change:
 - User approved Theme #6 as The Megastructure Elevator, a vertical parallax scroll journey with four viewport-height floors.
 - Added `src/themes/Megastructure.jsx` with an internal scroll container, elevator level HUD, Canvas particle/conduit/perspective parallax, data-driven mission archives, full-width Idea-Board simulation bay, contact relays, CV extraction, reduced-motion handling, and explicit disposal.
 - Added the sixth `⚡ Megastructure` dimension label, integrated its lifecycle through the stable `viewport-root`, and documented the four-floor architecture.
+- Changed the initial dimension from Retro OS to Pixel RPG by setting the initial application theme state to `rpg`; Retro OS remains available through the dimension switcher and retains its OS flavor behavior.
