@@ -64,6 +64,11 @@ Use the bookmark ribbons or Prev/Next controls to navigate. The theme removes it
 The `Neural Core` dimension is implemented in `src/themes/NeuralCore.jsx` as an open orbital node map floating in a deep obsidian void. A Canvas-rendered rotating icosahedron and drifting data particles provide the ambient field; four semantic satellite buttons expose focused channels for identity, missions, Idea-Board, and data uplink.
 
 Each channel opens one spacious frosted holographic slate and returns to the ambient orbit with `[ ⨉ RETURN TO ORBIT ]`. All content uses the verified profile, career, project, and CV data. The component preserves native Web Audio hover/click effects, keyboard operation, reduced-motion behavior, and explicit disposal of listeners, animation frames, timers, and audio context.
+## Theme #6: Megastructure Elevator
+
+The `Megastructure` dimension is implemented in `src/themes/Megastructure.jsx` as an internal full-page vertical journey beneath the fixed Header. Four viewport-height floors form the elevator shaft: Operator Cockpit, Mission Archives, Neural Simulation Bay, and Data Extraction Port.
+
+The theme owns a Canvas parallax engine for drifting particles, neon conduits, and a perspective grid. Its scroll container updates the elevator level HUD and depth readout. Floor content is data-driven from the verified profile, career, project, contact, and CV sources. The theme removes its scroll, resize, click, animation, and download timers during disposal.
 ## Prerequisites
 
 - Node.js 20 or newer

@@ -27,7 +27,7 @@
 
 The Multiverse is a multi-theme developer portfolio with an interactive project showcase. Stage 1 uses a Vite vanilla JavaScript application and a nested Idea-Board application.
 
-- Theme #1 now supports two retro operating-system flavors: Windows 95/98 as the default and the preserved Classic Macintosh System 7.5.3 / Platinum experience. Theme #2 is the interactive Three.js developer desk, Theme #3 is the procedural 2D Pixel RPG overworld, Theme #4 is the Watercolor Sketchbook, and Theme #5 is the functional Neural Core orbital node map.
+- Theme #1 now supports two retro operating-system flavors: Windows 95/98 as the default and the preserved Classic Macintosh System 7.5.3 / Platinum experience. Theme #2 is the interactive Three.js developer desk, Theme #3 is the procedural 2D Pixel RPG overworld, Theme #4 is the Watercolor Sketchbook, Theme #5 is the functional Neural Core orbital node map, and Theme #6 is the Megastructure Elevator vertical parallax journey.
 
 The OS flavor is persisted in `localStorage` under `retro_os_flavor`. A first visit defaults to `win95`; switching between `win95` and `mac` happens without a page reload.
 
@@ -75,6 +75,7 @@ The latest dual-OS requirement explicitly changed the public Idea-Board URL to p
 - `src/themes/PixelRPG.jsx`: procedural Canvas 2D overworld with tile collision, keyboard/pointer/touch controls, NPC and building interactions, typewriter dialogue, location banners, data-driven overlays, and explicit disposal.
 - `src/themes/WatercolorSketchbook.jsx`: DOM-based watercolor sketchbook with four data-driven spreads, bookmark and Prev/Next navigation, Idea-Board iframe, CV download, watercolor doodler, page-turn animation, and explicit disposal.
 - `src/themes/NeuralCore.jsx`: framework-free orbital Canvas node map with rotating icosahedron, ambient particles, semantic satellite buttons, focused profile/career/Idea-Board/CV slates, native Web Audio, reduced-motion handling, and explicit disposal.
+- `src/themes/Megastructure.jsx`: internal scroll-owned four-floor elevator journey with Canvas particle/conduit/perspective parallax, level HUD, data-driven mission archives, full-width Idea-Board chamber, contact relays, CV extraction, reduced-motion handling, and explicit disposal.
 - `vite.config.js`: intentional Three.js vendor chunking and a 600 kB warning threshold for the existing Three.js runtime payload.
 - `public/resume-placeholder.pdf`: temporary download asset until the user supplies a real CV.
 - `public/screenshots/project-placeholder.svg`: legacy career-art asset; remove or stop using it when no longer needed.
@@ -248,6 +249,10 @@ Before reporting completion for a change:
 - Verify all four orbital nodes open the correct focused slate with the corresponding profile, career, Idea-Board, contact, and CV data.
 - Verify the orbital view removes the crowded 2×2 grid, preserves generous negative space, and keeps the core, satellites, vector lines, and particle field responsive.
 - Verify `[ ⨉ RETURN TO ORBIT ]`, Escape, keyboard node activation, audio toggle, hover/click effects, reduced motion, and disposal behavior.
+- Verify Theme #6 mounts beneath the Header, marks `⚡ Megastructure` active, and owns an internal four-floor vertical scroll surface.
+- Verify the elevator HUD updates through `LEVEL: 01` to `LEVEL: 04`, with parallax particles, conduits, and perspective grid responding to scroll.
+- Verify mission archives use all four career records, the Idea-Board chamber uses `http://localhost:5000`, and the extraction port uses verified contact and CV data.
+- Verify switching through all six dimensions disposes each interactive theme without stale listeners, animation frames, timers, or broken viewport styles.
 
 ## Change history
 
@@ -302,3 +307,6 @@ Before reporting completion for a change:
 - User approved replacing Theme #5's crowded Cyber HUD with the Neural Core orbital node map.
 - Added `src/themes/NeuralCore.jsx` with a Canvas-rendered rotating icosahedron, drifting particles, four semantic satellite nodes, focused holographic slates, Idea-Board chamber, profile/career/CV data, native Web Audio, keyboard operation, reduced-motion handling, and explicit disposal.
 - Replaced the Cyber HUD styles and implementation, renamed the dimension switcher label to `🌐 Neural Core`, and retained the existing `hud` theme identifier and stable `viewport-root` lifecycle.
+- User approved Theme #6 as The Megastructure Elevator, a vertical parallax scroll journey with four viewport-height floors.
+- Added `src/themes/Megastructure.jsx` with an internal scroll container, elevator level HUD, Canvas particle/conduit/perspective parallax, data-driven mission archives, full-width Idea-Board simulation bay, contact relays, CV extraction, reduced-motion handling, and explicit disposal.
+- Added the sixth `⚡ Megastructure` dimension label, integrated its lifecycle through the stable `viewport-root`, and documented the four-floor architecture.

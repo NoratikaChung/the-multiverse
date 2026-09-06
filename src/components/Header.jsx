@@ -4,6 +4,7 @@ const dimensions = [
   ['rpg', 'Pixel RPG'],
   ['sketch', 'Sketchbook'],
   ['hud', '🌐 Neural Core'],
+  ['megastructure', '⚡ Megastructure'],
 ];
 
 const escapeHtml = (value) => String(value)
