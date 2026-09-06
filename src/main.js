@@ -5,6 +5,7 @@ import career from './data/career.json';
 import projects from './data/projects.json';
 import { createPixelRPG } from './themes/PixelRPG.jsx';
 import { createWatercolorSketchbook } from './themes/WatercolorSketchbook.jsx';
+import { createThreeDDesk } from './themes/ThreeDDesk.jsx';
 import { createCyberHUD } from './themes/CyberHUD.jsx';
 
 const app = document.querySelector('#app');

@@ -299,3 +299,4 @@ Before reporting completion for a change:
 - User approved Theme #5 as a Sci-Fi Cyberpunk Hologram HUD and directed development to continue directly on `main`.
 - Added `src/themes/CyberHUD.jsx` with Canvas wireframe telemetry, pointer-reactive particles, data-driven pilot/career panels, Idea-Board simulation frame, contact uplinks, CV extraction progress, optional native Web Audio, reduced-motion handling, and explicit disposal.
 - Integrated Theme #5 through the stable `viewport-root`; all theme transitions dispose prior interactive instances while recruiter quick view continues to rerender only `dialog-root`.
+- Restored the `createThreeDDesk` import in `src/main.js` after the Cyber HUD integration accidentally replaced it; the desk branch now resolves its exported factory again. The regression build restored the non-empty `three-vendor` chunk at 517.63 kB.
