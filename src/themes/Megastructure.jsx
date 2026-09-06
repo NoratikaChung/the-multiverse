@@ -1,3 +1,4 @@
+import { getProjectUrl } from '../data/project-url.js';
 const escapeHtml = (value) => String(value)
   .replaceAll('&', '&amp;')
   .replaceAll('<', '&lt;')
@@ -15,6 +16,7 @@ function missionMarkup(career) {
 }
 
 export function createMegastructure({ container, profile, career, ideaBoard }) {
+  const ideaBoardUrl = getProjectUrl(ideaBoard);
   const root = document.createElement('main');
   root.className = 'megastructure';
   root.setAttribute('aria-labelledby', 'mega-title');
@@ -30,7 +32,7 @@ export function createMegastructure({ container, profile, career, ideaBoard }) {
       <div class="mega-floor-inner"><div class="mega-section-heading"><div><p class="mega-kicker">FLOOR 02 // DECLASSIFIED MISSION ARCHIVES</p><h2>Systems with a human center.</h2></div><span class="mega-section-code">ARCHIVE // 04 RECORDS</span></div><div class="mega-mission-grid">${missionMarkup(career)}</div></div>
     </section>
     <section class="mega-floor mega-floor-simulation" id="mega-floor-03" data-mega-floor="3">
-      <div class="mega-floor-inner"><div class="mega-section-heading"><div><p class="mega-kicker">FLOOR 03 // NEURAL SIMULATION BAY</p><h2>Give ideas room to move.</h2></div><a class="mega-section-link" href="${escapeHtml(ideaBoard.githubUrl)}" target="_blank" rel="noreferrer">SOURCE ↗</a></div><div class="mega-simulation-frame"><div class="mega-simulation-bar"><span>LIVE CHAMBER // ${escapeHtml(ideaBoard.localUrl)}</span><span>UPLINK NOMINAL</span></div><iframe src="${escapeHtml(ideaBoard.localUrl)}" title="Idea-Board interactive brainstorming application" loading="lazy"></iframe></div></div>
+      <div class="mega-floor-inner"><div class="mega-section-heading"><div><p class="mega-kicker">FLOOR 03 // NEURAL SIMULATION BAY</p><h2>Give ideas room to move.</h2></div><a class="mega-section-link" href="${escapeHtml(ideaBoard.githubUrl)}" target="_blank" rel="noreferrer">SOURCE ↗</a></div><div class="mega-simulation-frame"><div class="mega-simulation-bar"><span>LIVE CHAMBER // ${escapeHtml(ideaBoardUrl)}</span><span>UPLINK NOMINAL</span></div><iframe src="${escapeHtml(ideaBoardUrl)}" title="Idea-Board interactive brainstorming application" loading="lazy"></iframe></div></div>
     </section>
     <section class="mega-floor mega-floor-uplink" id="mega-floor-04" data-mega-floor="4">
       <div class="mega-floor-inner mega-uplink-inner"><div><p class="mega-kicker">FLOOR 04 // DATA EXTRACTION PORT</p><h2>Open a direct channel.</h2><p class="mega-uplink-lede">The elevator has reached the ground floor. Establish a relay or extract the complete professional dossier.</p></div><div class="mega-relays"><a href="mailto:${escapeHtml(profile.email)}"><span>EMAIL</span><strong>${escapeHtml(profile.email)}</strong><b aria-hidden="true">↗</b></a><a href="${escapeHtml(profile.github)}" target="_blank" rel="noreferrer"><span>GITHUB</span><strong>github.com/NoratikaChung</strong><b aria-hidden="true">↗</b></a><a href="${escapeHtml(profile.linkedin)}" target="_blank" rel="noreferrer"><span>LINKEDIN</span><strong>linkedin.com/in/noratika-chung</strong><b aria-hidden="true">↗</b></a></div><div class="mega-dossier"><span class="mega-kicker">HIGH-VOLTAGE EXTRACTION // CV.PDF</span><p data-mega-download-status>Ready for extraction.</p><button data-mega-action="download-resume" type="button">[ ⬇ DOWNLOAD DOSSIER: RESUME.PDF ]</button><div class="mega-download-track" aria-hidden="true"><i data-mega-download-progress></i></div></div></div>

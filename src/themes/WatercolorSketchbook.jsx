@@ -1,3 +1,4 @@
+import { getProjectUrl } from '../data/project-url.js';
 const escapeHtml = (value) => String(value)
   .replaceAll('&', '&amp;')
   .replaceAll('<', '&lt;')
@@ -75,6 +76,7 @@ function careerSpread(career) {
 }
 
 function labSpread(ideaBoard) {
+  const ideaBoardUrl = getProjectUrl(ideaBoard);
   return `<div class="sketch-spread sketch-spread-lab">
     <article class="sketch-page sketch-page-left workshop-page">
       <span class="page-number">05 / THE WORKSHOP</span>
@@ -84,10 +86,10 @@ function labSpread(ideaBoard) {
       <p class="hand-copy">A collaborative canvas for brainstorming, clustering thoughts, and making a little space for the unexpected.</p>
       <div class="tablet-frame">
         <div class="tablet-camera"></div>
-        <div class="tablet-screen"><div class="tablet-screen-lines"></div><iframe src="${escapeHtml(ideaBoard.localUrl)}" title="Idea-Board interactive brainstorming application" loading="lazy"></iframe></div>
+        <div class="tablet-screen"><div class="tablet-screen-lines"></div><iframe src="${escapeHtml(ideaBoardUrl)}" title="Idea-Board interactive brainstorming application" loading="lazy"></iframe></div>
         <span class="tablet-home"></span>
       </div>
-      <div class="lab-links"><a href="${escapeHtml(ideaBoard.localUrl)}" target="_blank" rel="noreferrer">Open full Idea-Board ↗</a><a href="${escapeHtml(ideaBoard.githubUrl)}" target="_blank" rel="noreferrer">Inspect the source ↗</a></div>
+      <div class="lab-links"><a href="${escapeHtml(ideaBoardUrl)}" target="_blank" rel="noreferrer">Open full Idea-Board ↗</a><a href="${escapeHtml(ideaBoard.githubUrl)}" target="_blank" rel="noreferrer">Inspect the source ↗</a></div>
     </article>
     <article class="sketch-page sketch-page-right doodler-page">
       <span class="page-number">06 / MARGIN DOODLES</span>

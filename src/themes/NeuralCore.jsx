@@ -1,3 +1,4 @@
+import { getProjectUrl } from '../data/project-url.js';
 const escapeHtml = (value) => String(value)
   .replaceAll('&', '&amp;')
   .replaceAll('<', '&lt;')
@@ -43,6 +44,7 @@ function missionContent(entry) {
 }
 
 export function createNeuralCore({ container, profile, career, ideaBoard }) {
+  const ideaBoardUrl = getProjectUrl(ideaBoard);
   const root = document.createElement('main');
   root.className = 'neural-core';
   root.setAttribute('aria-labelledby', 'neural-core-title');
@@ -239,7 +241,7 @@ export function createNeuralCore({ container, profile, career, ideaBoard }) {
   }
 
   function gammaSlate() {
-    return `<p class="neural-slate-kicker">CHANNEL 03 // SIMULATION LINK</p><h2 id="neural-slate-title">Idea-Board</h2><p class="neural-slate-lede">Collaborative real-time board for brainstorming and clustering ideas.</p><div class="neural-idea-frame"><div><span>LIVE CHAMBER // ${escapeHtml(ideaBoard.localUrl)}</span><a href="${escapeHtml(ideaBoard.githubUrl)}" target="_blank" rel="noreferrer">SOURCE ↗</a></div><iframe src="${escapeHtml(ideaBoard.localUrl)}" title="Idea-Board interactive brainstorming application" loading="lazy"></iframe></div>`;
+    return `<p class="neural-slate-kicker">CHANNEL 03 // SIMULATION LINK</p><h2 id="neural-slate-title">Idea-Board</h2><p class="neural-slate-lede">Collaborative real-time board for brainstorming and clustering ideas.</p><div class="neural-idea-frame"><div><span>LIVE CHAMBER // ${escapeHtml(ideaBoardUrl)}</span><a href="${escapeHtml(ideaBoard.githubUrl)}" target="_blank" rel="noreferrer">SOURCE ↗</a></div><iframe src="${escapeHtml(ideaBoardUrl)}" title="Idea-Board interactive brainstorming application" loading="lazy"></iframe></div>`;
   }
 
   function deltaSlate() {

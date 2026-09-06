@@ -1,3 +1,4 @@
+import { getProjectUrl } from '../data/project-url.js';
 const TILE_SIZE = 32;
 const WORLD_COLUMNS = 56;
 const WORLD_ROWS = 36;
@@ -205,6 +206,7 @@ function drawCharacter(context, x, y, palette, direction, walkingFrame, isCourie
 }
 
 export function createPixelRPG({ container, profile, career, ideaBoard }) {
+  const ideaBoardUrl = getProjectUrl(ideaBoard);
   const root = document.createElement('section');
   root.className = 'pixel-rpg';
   root.setAttribute('aria-label', "Nora's Realm 2D pixel RPG");
@@ -653,7 +655,7 @@ export function createPixelRPG({ container, profile, career, ideaBoard }) {
   }
 
   function showArcadeModal() {
-    showModal('The Pixel Arcade', `<div class="pixel-rpg-iframe-bar"><span>${escapeHtml(ideaBoard.localUrl)}</span><a href="${escapeHtml(ideaBoard.githubUrl)}" target="_blank" rel="noreferrer">Source ↗</a></div><iframe class="pixel-rpg-iframe" src="${escapeHtml(ideaBoard.localUrl)}" title="Idea-Board interactive brainstorming application" loading="lazy"></iframe>`);
+    showModal('The Pixel Arcade', `<div class="pixel-rpg-iframe-bar"><span>${escapeHtml(ideaBoardUrl)}</span><a href="${escapeHtml(ideaBoard.githubUrl)}" target="_blank" rel="noreferrer">Source ↗</a></div><iframe class="pixel-rpg-iframe" src="${escapeHtml(ideaBoardUrl)}" title="Idea-Board interactive brainstorming application" loading="lazy"></iframe>`);
   }
 
   function showProfileModal() {

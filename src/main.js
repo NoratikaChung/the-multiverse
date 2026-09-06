@@ -3,6 +3,7 @@ import { createHeader, updateHeader } from './components/Header.jsx';
 import profile from './data/profile.json';
 import career from './data/career.json';
 import projects from './data/projects.json';
+import { getProjectUrl } from './data/project-url.js';
 import { createPixelRPG } from './themes/PixelRPG.jsx';
 import { createWatercolorSketchbook } from './themes/WatercolorSketchbook.jsx';
 import { createThreeDDesk } from './themes/ThreeDDesk.jsx';
@@ -11,6 +12,8 @@ import { createMegastructure } from './themes/Megastructure.jsx';
 
 const app = document.querySelector('#app');
 const ideaBoard = projects.find((project) => project.id === 'idea-board');
+const ideaBoardUrl = getProjectUrl(ideaBoard);
+const ideaBoardEnvironment = import.meta.env.PROD ? 'production' : 'local';
 const validOsFlavors = ['win95', 'mac'];
 const storedOsFlavor = window.localStorage.getItem('retro_os_flavor');
 
@@ -137,7 +140,7 @@ function careerContent() {
 }
 
 function ideaContent() {
-  return `<section class="idea-shell"><div class="iframe-toolbar"><span>${escapeHtml(ideaBoard.localUrl)}</span><a href="${escapeHtml(ideaBoard.githubUrl)}" target="_blank" rel="noreferrer">GitHub ↗</a></div><iframe src="${escapeHtml(ideaBoard.localUrl)}" title="Idea-Board interactive application" loading="lazy"></iframe><div class="status-bar">${escapeHtml(ideaBoard.title)} · local application · ready</div></section>`;
+  return `<section class="idea-shell"><div class="iframe-toolbar"><span>${escapeHtml(ideaBoardUrl)}</span><a href="${escapeHtml(ideaBoard.githubUrl)}" target="_blank" rel="noreferrer">GitHub ↗</a></div><iframe src="${escapeHtml(ideaBoardUrl)}" title="Idea-Board interactive application" loading="lazy"></iframe><div class="status-bar">${escapeHtml(ideaBoard.title)} · ${ideaBoardEnvironment} application · ready</div></section>`;
 }
 
 function labContent() {

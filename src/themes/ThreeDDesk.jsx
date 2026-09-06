@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { getProjectUrl } from '../data/project-url.js';
 
 const escapeHtml = (value) => String(value)
   .replaceAll('&', '&amp;')
@@ -60,6 +61,7 @@ function createTexturedPaper(width, height, color = 0xf8f1dc) {
 }
 
 export function createThreeDDesk({ container, profile, career, ideaBoard }) {
+  const ideaBoardUrl = getProjectUrl(ideaBoard);
   const root = document.createElement('section');
   root.className = 'three-desk';
   root.setAttribute('aria-label', 'Interactive 3D developer desk');
@@ -417,7 +419,7 @@ export function createThreeDDesk({ container, profile, career, ideaBoard }) {
   }
 
   function showIdeaBoard() {
-    showModal('Idea-Board', `<div class="desk-iframe-toolbar"><span>${escapeHtml(ideaBoard.localUrl)}</span><a href="${escapeHtml(ideaBoard.githubUrl)}" target="_blank" rel="noreferrer">View source ↗</a></div><iframe class="desk-idea-frame" src="${escapeHtml(ideaBoard.localUrl)}" title="Idea-Board interactive application" loading="lazy"></iframe>`);
+    showModal('Idea-Board', `<div class="desk-iframe-toolbar"><span>${escapeHtml(ideaBoardUrl)}</span><a href="${escapeHtml(ideaBoard.githubUrl)}" target="_blank" rel="noreferrer">View source ↗</a></div><iframe class="desk-idea-frame" src="${escapeHtml(ideaBoardUrl)}" title="Idea-Board interactive application" loading="lazy"></iframe>`);
   }
 
   function activateObject(metadata) {

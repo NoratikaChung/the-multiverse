@@ -68,7 +68,7 @@ The latest dual-OS requirement explicitly changed the public Idea-Board URL to p
 - `src/styles.css`: Windows 95 and Classic Mac presentation, responsive behavior, beveled frames, wallpaper, and scrollbar styling.
 - `src/data/profile.json`: personal profile, education, awards, certifications, and skills.
 - `src/data/career.json`: career and project experience entries.
-- `src/data/projects.json`: interactive project metadata, with Idea-Board first and public URL on port `5000`.
+- `src/data/projects.json`: interactive project metadata, with Idea-Board first, local URL on port `5000`, and production URL on `ideaboard.noratikachung.com`.
 - `scripts/start-idea-board.mjs`: starts the ignored Idea-Board checkout on port `3000` and proxies it to public port `5000`.
 - `src/themes/ThreeDDesk.jsx`: framework-free Three.js scene with OrbitControls, procedural desk objects, raycasting, data-driven inspection overlays, camera focus transitions, and explicit disposal.
 - `three`: runtime dependency used by Theme #2; the 3D theme is mounted only for `state.theme === 'desk'` and disposed before leaving it.
@@ -82,6 +82,9 @@ The latest dual-OS requirement explicitly changed the public Idea-Board URL to p
 - `NOTES.md`: setup and launch instructions for developers.
 - `context.md`: this persistent instruction and project-state file; future agents must read it first.
 - `.gitignore`: ignores `node_modules/`, `dist/`, environment files, and `apps/`.
+- `src/data/project-url.js`: shared Vite environment resolver selecting each project's local or production URL.
+- `vercel.json`: Vite SPA fallback rewrite for direct portfolio routes on Vercel.
+- `DEPLOYMENT.md`: permanent Vercel architecture standards for backend, frontend, domain, and WebSocket projects.
 
 ## User-supplied verified profile data
 
@@ -311,3 +314,6 @@ Before reporting completion for a change:
 - Added `src/themes/Megastructure.jsx` with an internal scroll container, elevator level HUD, Canvas particle/conduit/perspective parallax, data-driven mission archives, full-width Idea-Board simulation bay, contact relays, CV extraction, reduced-motion handling, and explicit disposal.
 - Added the sixth `⚡ Megastructure` dimension label, integrated its lifecycle through the stable `viewport-root`, and documented the four-floor architecture.
 - Changed the initial dimension from Retro OS to Pixel RPG by setting the initial application theme state to `rpg`; Retro OS remains available through the dimension switcher and retains its OS flavor behavior.
+- Added Vercel serverless configuration and CommonJS app export to the nested Idea-Board repository; local execution retains the port `3000` upstream used by the portfolio proxy.
+- Added `productionUrl` registry data, shared environment-aware Idea-Board URL resolution across all six renderers, and the portfolio SPA rewrite.
+- Added `DEPLOYMENT.md` as the permanent Vercel deployment rulebook for future ecosystem projects.
