@@ -36,7 +36,6 @@ function storySpread(profile) {
       <p class="ink-kicker">FIELD NOTES // EDUCATION</p>
       <h2>University of Science Malaysia</h2>
       <p class="hand-copy"><strong>${escapeHtml(profile.education.degree)}</strong><br>${escapeHtml(profile.education.period)}</p>
-      <div class="cgpa-note"><span>CGPA</span><strong>${escapeHtml(profile.education.cgpa)}</strong><small>First-Class academic background</small></div>
       <h3 class="section-label">Collected honors</h3>
       <ul class="hand-list">${listMarkup(profile.awards.map((award) => `${award.title} — ${award.detail}`))}</ul>
       <h3 class="section-label">Technical swatches</h3>
@@ -75,7 +74,7 @@ function careerSpread(career) {
   </div>`;
 }
 
-function labSpread(ideaBoard) {
+function labSpread(ideaBoard, profile) {
   const ideaBoardUrl = getProjectUrl(ideaBoard);
   return `<div class="sketch-spread sketch-spread-lab">
     <article class="sketch-page sketch-page-left workshop-page">
@@ -179,7 +178,7 @@ export function createWatercolorSketchbook({ container, profile, career, project
   function spreadMarkup(index) {
     if (index === 0) return storySpread(profile);
     if (index === 1) return careerSpread(career);
-    if (index === 2) return labSpread(ideaBoard);
+    if (index === 2) return labSpread(ideaBoard, profile);
     return postcardSpread(profile);
   }
 

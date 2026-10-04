@@ -3,7 +3,7 @@
   "preferredName": "Nora",
   "title": "Full-Stack Software Engineer",
   "location": "Kuala Lumpur, Malaysia",
-  "bio": "Full-Stack Software Engineer with a First-Class academic background (CGPA 3.46) and a passion for architecting resilient systems, interactive digital experiences, and practical AI solutions. From reducing manufacturing server monitoring time by 87% at Micron to engineering client-facing platforms at K3 Advisory, I build software that blends performance with thoughtful interaction.",
+  "bio": "Full-Stack Software Engineer with a First-Class academic background and a passion for architecting resilient systems, interactive digital experiences, and practical AI solutions. From reducing manufacturing server monitoring time by 87% at Micron to engineering client-facing platforms at K3 Advisory, I build software that blends performance with thoughtful interaction.",
   "email": "cnoratika@gmail.com",
   "github": "https://github.com/NoratikaChung",
   "linkedin": "https://www.linkedin.com/in/noratika-chung-8b2570219/",
@@ -11,7 +11,6 @@
   "education": {
     "degree": "BSc Computer Science in Software Engineering (Hons.)",
     "institution": "University of Science Malaysia (USM)",
-    "cgpa": "3.46",
     "period": "Oct 2021 - Sept 2025"
   },
   "awards": [

@@ -18,6 +18,7 @@
 - Never commit to the workspace repository.
 - Keep all changes inside `the-multiverse/`.
 - Do not invent personal profile data. Use the supplied verified Noratika Chung data or later user-provided updates.
+- Academic grades are private: do not store or display numerical academic scores in profile data, webapp content, downloads, or project documentation.
 - Use evidence-first engineering: inspect the current code, reuse established behavior where appropriate, make the smallest complete change, and verify behavior by running the application rather than reasoning only.
 - Do not leave TODO, FIXME, fake fallback, empty stub, or misleading scaffold code.
 - For non-trivial changes, build and run the relevant application and report exact verification results and limitations.
@@ -94,7 +95,6 @@ The current requested values are:
 - LinkedIn: `https://www.linkedin.com/in/noratika-chung-8b2570219/`
 - Degree: BSc Computer Science in Software Engineering (Hons.)
 - Institution: University of Science Malaysia (USM)
-- CGPA: 3.46
 - Education period: Oct 2021 - Sept 2025
 - Awards: Gold Medal Award – USM PIXEL 2025; Gold Medal – VIC 2024; Dean's List Awards; Yeoh Fung Kee & Wong Yew Nyong USM Scholarship.
 - Certifications: AWS Certified AI Practitioner; Microsoft Azure AI Fundamentals; Microsoft Azure Developer Associate.
@@ -157,7 +157,7 @@ Icon labels use a pixel-friendly font and white text with a crisp black outline.
 
 ### Macintosh system UI
 
-- Apple logo opens About This Computer with Nora's system information, CGPA, and bio summary.
+- Apple logo opens About This Computer with Nora's education, system information, and bio summary.
 - File menu includes Download CV.
 - Special menu includes Restart behavior and Switch Theme access.
 - Window title bars use six horizontal black/gray pinstripes with a centered white/gray title block.
@@ -171,16 +171,20 @@ Icon labels use a pixel-friendly font and white text with a crisp black outline.
 ### Pixel RPG requirements
 
 - Theme #2 mounts inside the existing `viewport-root` beneath the fixed 32px Header and uses no external image assets.
-- `src/themes/PixelRPG.jsx` owns the procedural map, static canvas layer, game loop, camera, player movement, collision rectangles, courier NPC, interaction prompt, dialogue, overlays, controls, and listeners.
-- The Archives, Arcade, Academy, Courier, and Communication Beacon are data-bound to the existing profile, career, projects, CV, and Idea-Board contracts.
-- Keyboard movement uses WASD and arrow keys; SPACE/E activates nearby interactions; pointer/touch path clicks and the on-screen D-pad provide accessible alternatives.
+- `src/themes/PixelRPG.jsx` owns the outdoor town, four decorated interior maps, cached static Canvas layers, collision-aware walking routes, camera, player, courier, inspection overlays, and controls.
+- The Grand Archives, Pixel Arcade, Wizard's Academy, and Nora's Cottage have enterable doorways. Entering changes scene without opening a document; inspect furniture inside for career, projects, education, awards, certifications, skills, bio, contacts, and CV. Exiting returns to the corresponding outdoor doorway.
+- Focus the map for WASD/Arrow movement and SPACE/E inspection. Click/tap destinations or use the semantic location/object guide to walk around obstacles; held D-pad controls work in every scene.
 - Leaving Theme #2 cancels the animation frame, removes keyboard, pointer, and touch listeners, clears the canvases, closes overlays, and clears the mount.
+- The protagonist is a woman with black hair and brown eyes, a cream blouse and teal outfit, with four-direction walking sprites. Buildings use textured roofs, window frames, entrance steps, and high-contrast signs.
+- UI text uses readable system fonts without text shadows. On small screens the map occupies a dedicated region clear of navigation and movement controls.
 
 ### Pixel RPG accessibility
 
 - D-pad, Action, dialogue-option, modal-close, external-link, and CV controls are semantic buttons or links with accessible names.
 - Dialogue and modal overlays move focus to their controls, cycle Tab focus within the active overlay, close with Escape, and restore focus to the opening control.
 - Canvas-only state is supplemented with live status text and visible HTML HUD controls.
+- The object guide provides walk-to and nearby inspect/enter actions; it does not teleport or open documents automatically. Exit room walks to the doorway if necessary, then exits on the next activation.
+- Opening inspection or recruiter dialogs pauses movement; movement keys do not intercept text fields, controls, or the Idea-Board iframe. Reduced motion disables ambient/camera easing and typewriter animation.
 
 ### Watercolor Sketchbook requirements
 
@@ -229,6 +233,8 @@ Before reporting completion for a change:
 - Verify Theme #2 mounts beneath the Header, marks `Pixel RPG` active, and does not remount during recruiter dialog updates.
 - Verify player keyboard, pointer path, touch, and D-pad controls respect collision boundaries.
 - Verify Archive, Arcade, Academy, Courier, and Communication Beacon interactions use the expected data and URLs.
+- Verify entry/exit for all four room scenes, furniture/wall collision, guide routes, pointer destinations, keyboard/D-pad movement, content inspection/close, and return to the correct outdoor doorway.
+- Verify public data and all three themes contain no private academic score field, value, or display.
 - Verify leaving and re-entering Theme #2 removes its animation, keyboard, pointer, and touch listeners and creates a fresh game loop.
 - Verify Theme #3 mounts beneath the Header, marks `Sketchbook` active, and does not remount during recruiter dialog updates.
 - Verify all four bookmark tabs and Prev/Next controls update the active spread and page-turn state.
@@ -300,3 +306,6 @@ Before reporting completion for a change:
 - Removed the 3D Desk, Neural Core, and Megastructure dimensions, their runtime branches and styles, and the Three.js dependency/configuration. Retro, Pixel RPG, and Watercolor Sketchbook remain.
 - Added edge/corner pointer resizing and arrow-key resizing to both OS window families; corrected titlebar drag coordinates and maximize geometry/content fill. Removed the `(Active)` suffix while retaining blue theme selection and `aria-pressed`.
 - Fixed Retro Idea-Board sizing: the iframe flexes through the remaining window body in normal, resized, and maximized states; maximized windows retain frontmost stacking.
+- Replaced building-document shortcuts with playable rooms and inspectable furniture, added collision-aware guide routes and scoped input, redesigned the woman protagonist/buildings, and removed hard-to-read text effects. Removed private academic scores from profile data, every renderer, and documentation.
+- Fixed the Sketchbook Lab's missing profile argument discovered during cross-theme verification; its embedded project, doodler, and page navigation work again.
+- Verification: browser gameplay exercised all four interiors and exits, furniture collision, inspect/close, guide routes, keyboard/D-pad/touch destinations, reduced motion, courier, recruiter pause, Retro education, and all four Sketchbook spreads. No private academic score fields or values remain in public source/data.

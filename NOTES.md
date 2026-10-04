@@ -32,12 +32,13 @@ The `Pixel RPG` dimension is implemented in `src/themes/PixelRPG.jsx` with a pro
 
 Controls:
 
-- WASD or Arrow keys: move in four directions.
-- SPACE or E: interact with the nearest marked object.
-- Click or tap the map: walk toward the selected point.
-- On-screen D-pad and `A / Action`: touch-friendly movement and interaction.
+- Focus the map, then use WASD or Arrow keys to move and SPACE/E to enter or inspect nearby objects.
+- Click or tap the map to walk toward a destination; routes avoid solid buildings, walls, and furniture.
+- Open the Location & object guide to walk to a doorway or room object, then activate its enabled Enter/Inspect button. Walking does not open content automatically.
+- Hold the on-screen D-pad to move, or activate its buttons with the keyboard to walk one tile.
+- Exit room walks back to the doorway if needed; activate it again when nearby to return to town.
 
-Explore the Grand Archives for career history, the Pixel Arcade for Idea-Board, the Wizard's Academy for profile data, the Town Courier for the CV download, and the Communication Beacon outside Nora's Cottage for contact links. The game loop and all keyboard, pointer, and touch listeners are disposed when changing dimensions.
+Enter the Grand Archives to inspect career shelves, the Pixel Arcade to play Idea-Board, the Wizard's Academy to explore education and credentials, and Nora's Cottage for bio, contact, skills, and CV objects. The protagonist is a black-haired, brown-eyed woman in a cream blouse and teal outfit. Text uses clean, high-contrast fonts; the mobile map remains clear of HUD controls. Courier CV and outdoor contact interactions remain available. Theme switching disposes animation, maps, observers, overlays, and listeners.
 
 ## Theme #3: Watercolor Sketchbook
 
