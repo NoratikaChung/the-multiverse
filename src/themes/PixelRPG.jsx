@@ -213,7 +213,7 @@ export function createPixelRPG({ container, profile, career, ideaBoard }) {
   root.innerHTML = `
     <canvas class="pixel-rpg-canvas" aria-label="Nora's Realm playable game map"></canvas>
     <div class="pixel-rpg-hud">
-      <div><p class="pixel-rpg-kicker">DIMENSION 03 // NORA'S REALM</p><h1>Nora's Realm</h1></div>
+      <div><p class="pixel-rpg-kicker">DIMENSION 02 // NORA'S REALM</p><h1>Nora's Realm</h1></div>
       <p class="pixel-rpg-help"><kbd>WASD</kbd> / <kbd>ARROWS</kbd> Move · <kbd>SPACE</kbd> / <kbd>E</kbd> Interact</p>
     </div>
     <div class="pixel-rpg-location" aria-live="polite"></div>

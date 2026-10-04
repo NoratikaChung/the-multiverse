@@ -27,7 +27,7 @@
 
 The Multiverse is a multi-theme developer portfolio with an interactive project showcase. Stage 1 uses a Vite vanilla JavaScript application and a nested Idea-Board application.
 
-- Pixel RPG is the default landing dimension. Theme #1 supports two retro operating-system flavors: Windows 95/98 and the preserved Classic Macintosh System 7.5.3 / Platinum experience. Theme #2 is the interactive Three.js developer desk, Theme #3 is the procedural 2D Pixel RPG overworld, Theme #4 is the Watercolor Sketchbook, Theme #5 is the functional Neural Core orbital node map, and Theme #6 is the Megastructure Elevator vertical parallax journey.
+- Pixel RPG is the default landing dimension. The portfolio has three dimensions: Retro, with Windows 95/98 or Classic Macintosh System 7.5.3 / Platinum flavors; Pixel RPG, a procedural 2D overworld; and Watercolor Sketchbook.
 
 The OS flavor is persisted in `localStorage` under `retro_os_flavor`. A first visit defaults to `win95`; switching between `win95` and `mac` happens without a page reload.
 
@@ -65,18 +65,13 @@ The latest dual-OS requirement explicitly changed the public Idea-Board URL to p
 
 - `index.html`: Vite document shell.
 - `src/main.js`: localStorage OS state, stable shell/viewport rendering, data-driven windows, Windows 95 and Mac desktops, taskbars/menus, drag/focus behavior, dimension switching, and recruiter view.
-- `src/styles.css`: Windows 95 and Classic Mac presentation, responsive behavior, beveled frames, wallpaper, and scrollbar styling.
+- `src/styles.css`: shared Windows 95, Classic Mac, Pixel RPG, and Watercolor Sketchbook styling with responsive and reduced-motion behavior.
 - `src/data/profile.json`: personal profile, education, awards, certifications, and skills.
 - `src/data/career.json`: career and project experience entries.
 - `src/data/projects.json`: interactive project metadata, with Idea-Board first, local URL on port `5000`, and production URL on `ideaboard.noratikachung.com`.
 - `scripts/start-idea-board.mjs`: starts the ignored Idea-Board checkout on port `3000` and proxies it to public port `5000`.
-- `src/themes/ThreeDDesk.jsx`: framework-free Three.js scene with OrbitControls, procedural desk objects, raycasting, data-driven inspection overlays, camera focus transitions, and explicit disposal.
-- `three`: runtime dependency used by Theme #2; the 3D theme is mounted only for `state.theme === 'desk'` and disposed before leaving it.
 - `src/themes/PixelRPG.jsx`: procedural Canvas 2D overworld with tile collision, keyboard/pointer/touch controls, NPC and building interactions, typewriter dialogue, location banners, data-driven overlays, and explicit disposal.
 - `src/themes/WatercolorSketchbook.jsx`: DOM-based watercolor sketchbook with four data-driven spreads, bookmark and Prev/Next navigation, Idea-Board iframe, CV download, watercolor doodler, page-turn animation, and explicit disposal.
-- `src/themes/NeuralCore.jsx`: framework-free orbital Canvas node map with rotating icosahedron, ambient particles, semantic satellite buttons, focused profile/career/Idea-Board/CV slates, native Web Audio, reduced-motion handling, and explicit disposal.
-- `src/themes/Megastructure.jsx`: internal scroll-owned four-floor elevator journey with Canvas particle/conduit/perspective parallax, level HUD, data-driven mission archives, full-width Idea-Board chamber, contact relays, CV extraction, reduced-motion handling, and explicit disposal.
-- `vite.config.js`: intentional Three.js vendor chunking and a 600 kB warning threshold for the existing Three.js runtime payload.
 - `public/resume-placeholder.pdf`: temporary download asset until the user supplies a real CV.
 - `public/screenshots/project-placeholder.svg`: legacy career-art asset; remove or stop using it when no longer needed.
 - `NOTES.md`: setup and launch instructions for developers.
@@ -121,7 +116,7 @@ Career entries:
 - Desktop icons: My Computer, Recycle Bin, Idea-Board.exe, About_Nora.txt, Resume.pdf, and Boot Macintosh System 7.exe.
 - Bottom taskbar: raised Start button with Windows flag, active window buttons, inset speaker/clock tray.
 - Start menu: Programs, Documents, Switch to Mac OS, Download CV, and Shut Down.
-- Windows must support drag, focus promotion, minimize, maximize/restore, close, title-bar menus, and classic scrollbar treatment.
+- Windows must support drag, edge/corner resizing, focus promotion, minimize, maximize/restore, close, title-bar menus, and classic scrollbar treatment.
 - Idea-Board.exe loads the public proxy at `http://localhost:5000`.
 
 ### OS switching
@@ -139,8 +134,11 @@ Career entries:
 - Header geometry is fixed at `top: 0`, `left: 0`, `width: 100%`, `height: 32px`, and `z-index: 9999`.
 - Windows work area is fixed from `top: 32px` to `bottom: 28px`; the Windows taskbar is fixed at 28px.
 - Mac work area is fixed from `top: 32px` to the bottom of the viewport.
-- Window dragging is clamped to the work-area origin so title bars remain below the fixed header.
+- Window dragging stays below the fixed header; resizing is bounded to the OS work area.
 - The OS switcher reserves its width outside the Retro dimension with hidden visibility so right-side controls retain stable coordinates.
+- Dimension selection uses the blue active style and `aria-pressed`, without an `(Active)` suffix.
+- Both OS window families resize from edges and corners; the keyboard-focusable lower-right handle supports arrow-key resizing.
+- Maximized windows fill the work area below the header; Windows stops above the taskbar, and window content fills the remaining height.
 
 ### Desktop icons
 
@@ -163,33 +161,20 @@ Icon labels use a pixel-friendly font and white text with a crisp black outline.
 - File menu includes Download CV.
 - Special menu includes Restart behavior and Switch Theme access.
 - Window title bars use six horizontal black/gray pinstripes with a centered white/gray title block.
-- Windows include classic close and zoom boxes, draggable title bars, focus/z-index promotion, double/beveled borders, and classic scrollbar styling.
+- Windows include classic close and zoom boxes, draggable title bars, edge/corner resizing, focus/z-index promotion, double/beveled borders, and classic scrollbar styling.
 - Macintosh HD / Career window uses Finder-like list content.
 - About Nora.txt uses SimpleText-like content containing education, all awards, certifications, and grouped skills.
 - Idea-Board.app wraps an iframe to the public proxy at `http://localhost:5000`; the nested upstream remains on `http://localhost:3000`.
+- The Retro Idea-Board iframe expands to fill the available window body between its toolbar and status bar in normal, resized, and maximized windows.
 - Recruiter Quick View is modern, high-contrast, one-page, data-driven, and includes a prominent CV download button.
-
-### Three-dimensional desk requirements
-
-- Theme #2 is mounted inside the existing `viewport-root` beneath the fixed 32px Header.
-- `src/themes/ThreeDDesk.jsx` owns its Three.js scene, renderer, OrbitControls, animation frame, listeners, raycaster, tooltip, and object-detail modal.
-- Interactive objects use `userData` metadata and are data-backed by `profile.json`, `career.json`, and the first `projects.json` entry.
-- Monitor opens Idea-Board at `http://localhost:5000`; corkboard opens career history; notebook opens profile data; printer downloads `/resume-placeholder.pdf`; mug opens contact links.
-- Leaving Theme #2 cancels animation, disposes controls, renderer, geometries, materials, textures, and listeners, then clears the mount.
-
-### Three-dimensional desk accessibility
-
-- The Reset View and modal controls are semantic keyboard controls.
-- Object meaning is exposed through the visible HUD tooltip and modal headings; pointer hover is supplemental feedback.
-- The Idea-Board iframe has a descriptive title, and Escape closes object-detail overlays.
 
 ### Pixel RPG requirements
 
-- Theme #3 mounts inside the existing `viewport-root` beneath the fixed 32px Header and uses no external image assets.
+- Theme #2 mounts inside the existing `viewport-root` beneath the fixed 32px Header and uses no external image assets.
 - `src/themes/PixelRPG.jsx` owns the procedural map, static canvas layer, game loop, camera, player movement, collision rectangles, courier NPC, interaction prompt, dialogue, overlays, controls, and listeners.
 - The Archives, Arcade, Academy, Courier, and Communication Beacon are data-bound to the existing profile, career, projects, CV, and Idea-Board contracts.
 - Keyboard movement uses WASD and arrow keys; SPACE/E activates nearby interactions; pointer/touch path clicks and the on-screen D-pad provide accessible alternatives.
-- Leaving Theme #3 cancels the animation frame, removes keyboard, pointer, and touch listeners, clears the canvases, closes overlays, and clears the mount.
+- Leaving Theme #2 cancels the animation frame, removes keyboard, pointer, and touch listeners, clears the canvases, closes overlays, and clears the mount.
 
 ### Pixel RPG accessibility
 
@@ -199,10 +184,10 @@ Icon labels use a pixel-friendly font and white text with a crisp black outline.
 
 ### Watercolor Sketchbook requirements
 
-- Theme #4 mounts inside the existing `viewport-root` beneath the fixed 32px Header and uses CSS gradients and DOM/SVG-like primitives rather than external image assets.
+- Theme #3 mounts inside the existing `viewport-root` beneath the fixed 32px Header and uses CSS gradients and DOM/SVG-like primitives rather than external image assets.
 - `src/themes/WatercolorSketchbook.jsx` owns the drafting desk shell, sketchbook spreads, navigation state, page-turn timer, doodler canvas, doodler timers, and event listeners.
 - Story, honors, career notes, lab, Idea-Board, CV, and postcard content are data-bound to the existing profile, career, projects, and public asset contracts.
-- Leaving Theme #4 clears page-turn and doodler timers, removes delegated pointer/click listeners, and clears the mount.
+- Leaving Theme #3 clears page-turn and doodler timers, removes delegated pointer/click listeners, and clears the mount.
 
 ### Watercolor Sketchbook accessibility
 
@@ -237,25 +222,19 @@ Before reporting completion for a change:
 - Verify the header remains 32px tall and the Windows/Mac work areas begin at 32px.
 - Verify right-side controls reserve stable geometry when OS flavor or dimensions change.
 - Verify drag clamping keeps window title bars below the header.
-- Verify Theme #2 mounts beneath the Header, marks `3D Desk` active, and does not remount during recruiter dialog updates.
-- Verify leaving and re-entering Theme #2 calls Three.js cleanup and creates a fresh renderer and animation loop.
-- Verify raycast object metadata covers monitor, corkboard, notebook, printer, and contact interactions.
-- Verify Theme #3 mounts beneath the Header, marks `Pixel RPG` active, and does not remount during recruiter dialog updates.
+- Verify all eight window resize edges/corners and the keyboard resize handle update geometry and preserve it through rerenders and maximize/restore.
+- Verify maximized Windows/Mac windows fill their work areas, content fills the remaining height, and the Mac Contact shortcut stays beneath a maximized window.
+- Verify the Retro Idea-Board iframe fills the area between its toolbar and status bar after resizing and maximizing in Windows and Mac, with no unused body area.
+- Verify dimension tabs use blue active styling and `aria-pressed` without appending `(Active)` to labels.
+- Verify Theme #2 mounts beneath the Header, marks `Pixel RPG` active, and does not remount during recruiter dialog updates.
 - Verify player keyboard, pointer path, touch, and D-pad controls respect collision boundaries.
 - Verify Archive, Arcade, Academy, Courier, and Communication Beacon interactions use the expected data and URLs.
-- Verify leaving and re-entering Theme #3 removes its animation, keyboard, pointer, and touch listeners and creates a fresh game loop.
-- Verify Theme #4 mounts beneath the Header, marks `Sketchbook` active, and does not remount during recruiter dialog updates.
+- Verify leaving and re-entering Theme #2 removes its animation, keyboard, pointer, and touch listeners and creates a fresh game loop.
+- Verify Theme #3 mounts beneath the Header, marks `Sketchbook` active, and does not remount during recruiter dialog updates.
 - Verify all four bookmark tabs and Prev/Next controls update the active spread and page-turn state.
 - Verify profile, awards, skills, career, Idea-Board, CV, and contact content use the existing data and URLs.
-- Verify leaving and re-entering Theme #4 removes delegated pointer/click listeners and all page/doodler timers.
-- Verify Theme #5 mounts beneath the Header, marks `🌐 Neural Core` active, and does not remount during recruiter dialog updates.
-- Verify all four orbital nodes open the correct focused slate with the corresponding profile, career, Idea-Board, contact, and CV data.
-- Verify the orbital view removes the crowded 2×2 grid, preserves generous negative space, and keeps the core, satellites, vector lines, and particle field responsive.
-- Verify `[ ⨉ RETURN TO ORBIT ]`, Escape, keyboard node activation, audio toggle, hover/click effects, reduced motion, and disposal behavior.
-- Verify Theme #6 mounts beneath the Header, marks `⚡ Megastructure` active, and owns an internal four-floor vertical scroll surface.
-- Verify the elevator HUD updates through `LEVEL: 01` to `LEVEL: 04`, with parallax particles, conduits, and perspective grid responding to scroll.
-- Verify mission archives use all four career records, the Idea-Board chamber uses `http://localhost:5000`, and the extraction port uses verified contact and CV data.
-- Verify switching through all six dimensions disposes each interactive theme without stale listeners, animation frames, timers, or broken viewport styles.
+- Verify leaving and re-entering Theme #3 removes delegated pointer/click listeners and all page/doodler timers.
+- Verify switching through all three dimensions leaves no stale listeners, animation frames, timers, or broken viewport styles.
 
 ## Change history
 
@@ -317,3 +296,7 @@ Before reporting completion for a change:
 - Added Vercel serverless configuration and CommonJS app export to the nested Idea-Board repository; local execution retains the port `3000` upstream used by the portfolio proxy.
 - Added `productionUrl` registry data, shared environment-aware Idea-Board URL resolution across all six renderers, and the portfolio SPA rewrite.
 - Added `DEPLOYMENT.md` as the permanent Vercel deployment rulebook for future ecosystem projects.
+
+- Removed the 3D Desk, Neural Core, and Megastructure dimensions, their runtime branches and styles, and the Three.js dependency/configuration. Retro, Pixel RPG, and Watercolor Sketchbook remain.
+- Added edge/corner pointer resizing and arrow-key resizing to both OS window families; corrected titlebar drag coordinates and maximize geometry/content fill. Removed the `(Active)` suffix while retaining blue theme selection and `aria-pressed`.
+- Fixed Retro Idea-Board sizing: the iframe flexes through the remaining window body in normal, resized, and maximized states; maximized windows retain frontmost stacking.

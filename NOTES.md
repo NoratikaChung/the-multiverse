@@ -20,21 +20,13 @@ Mac work area: `top: 32px`, `bottom: 0`.
 
 Window dragging is clamped below the fixed header. Keep the header root outside OS-specific desktop markup when extending the UI.
 
-## Theme #2: Interactive 3D Desk
+Both OS window types resize from their edges and corners; the lower-right handle also supports arrow-key resizing. Maximize fills the work area below the header and above the Windows taskbar.
 
-The `3D Desk` dimension is implemented in `src/themes/ThreeDDesk.jsx` using Three.js and native `OrbitControls`. It mounts beneath the persistent 32px Header and builds the room, desk, monitor, career corkboard, profile notebook, printer, and contact mug procedurally.
+The embedded Idea-Board iframe fills the remaining window body in both OS flavors.
 
-Select an object to focus the camera and open its detail overlay:
+Selected dimensions use blue active styling and `aria-pressed`, without an `(Active)` label suffix.
 
-- Monitor: launches Idea-Board in an iframe at `http://localhost:5000`.
-- Corkboard: displays the career timeline from `src/data/career.json`.
-- Notebook: displays education, awards, and skills from `src/data/profile.json`.
-- Printer: triggers the placeholder CV download and shows a download control.
-- Mug: displays email, GitHub, and LinkedIn links.
-
-Use `Reset View` to return to the overview camera. Leaving the dimension explicitly disposes the renderer, controls, scene resources, listeners, and animation frame before another theme is rendered.
-
-## Theme #3: Pixel RPG Overworld
+## Theme #2: Pixel RPG Overworld
 
 The `Pixel RPG` dimension is implemented in `src/themes/PixelRPG.jsx` with a procedural HTML5 Canvas map called Nora's Realm. It does not load external image assets. Grass, water, paths, buildings, trees, fences, the player, and the courier are drawn from pixel primitives.
 
@@ -47,7 +39,7 @@ Controls:
 
 Explore the Grand Archives for career history, the Pixel Arcade for Idea-Board, the Wizard's Academy for profile data, the Town Courier for the CV download, and the Communication Beacon outside Nora's Cottage for contact links. The game loop and all keyboard, pointer, and touch listeners are disposed when changing dimensions.
 
-## Theme #4: Watercolor Sketchbook
+## Theme #3: Watercolor Sketchbook
 
 The `Sketchbook` dimension is implemented in `src/themes/WatercolorSketchbook.jsx`. It presents the portfolio as an open field journal on a warm drafting table, using CSS textures, watercolor washes, hand-drawn cards, bookmark ribbons, and responsive paper spreads.
 
@@ -59,16 +51,7 @@ The four spreads are:
 - Postcard: direct email, GitHub, and LinkedIn links.
 
 Use the bookmark ribbons or Prev/Next controls to navigate. The theme removes its delegated controls and doodler/page timers when switching dimensions.
-## Theme #5: Neural Core
 
-The `Neural Core` dimension is implemented in `src/themes/NeuralCore.jsx` as an open orbital node map floating in a deep obsidian void. A Canvas-rendered rotating icosahedron and drifting data particles provide the ambient field; four semantic satellite buttons expose focused channels for identity, missions, Idea-Board, and data uplink.
-
-Each channel opens one spacious frosted holographic slate and returns to the ambient orbit with `[ ⨉ RETURN TO ORBIT ]`. All content uses the verified profile, career, project, and CV data. The component preserves native Web Audio hover/click effects, keyboard operation, reduced-motion behavior, and explicit disposal of listeners, animation frames, timers, and audio context.
-## Theme #6: Megastructure Elevator
-
-The `Megastructure` dimension is implemented in `src/themes/Megastructure.jsx` as an internal full-page vertical journey beneath the fixed Header. Four viewport-height floors form the elevator shaft: Operator Cockpit, Mission Archives, Neural Simulation Bay, and Data Extraction Port.
-
-The theme owns a Canvas parallax engine for drifting particles, neon conduits, and a perspective grid. Its scroll container updates the elevator level HUD and depth readout. Floor content is data-driven from the verified profile, career, project, contact, and CV sources. The theme removes its scroll, resize, click, animation, and download timers during disposal.
 ## Prerequisites
 
 - Node.js 20 or newer

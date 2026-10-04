@@ -6,9 +6,6 @@ import projects from './data/projects.json';
 import { getProjectUrl } from './data/project-url.js';
 import { createPixelRPG } from './themes/PixelRPG.jsx';
 import { createWatercolorSketchbook } from './themes/WatercolorSketchbook.jsx';
-import { createThreeDDesk } from './themes/ThreeDDesk.jsx';
-import { createNeuralCore } from './themes/NeuralCore.jsx';
-import { createMegastructure } from './themes/Megastructure.jsx';
 
 const app = document.querySelector('#app');
 const ideaBoard = projects.find((project) => project.id === 'idea-board');
@@ -29,13 +26,11 @@ const state = {
   windowOrder: ['about'],
   windows: { about: { minimized: false, maximized: false } },
   positions: {},
+  sizes: {},
   notice: '',
 };
-let threeDDesk;
 let pixelRPG;
 let watercolorSketchbook;
-let neuralCore;
-let megastructure;
 let headerElement;
 
 const macCatalog = {
@@ -98,6 +93,7 @@ function setOsFlavor(flavor) {
   state.windowOrder = ['about'];
   state.windows = { about: { minimized: false, maximized: false } };
   state.positions = {};
+  state.sizes = {};
   render();
 }
 
@@ -165,18 +161,28 @@ function renderDesktopIcon(id, label, iconName, action = 'open-window') {
   return `<button class="desktop-icon ${selected ? 'is-selected' : ''}" data-action="${action}" data-window="${id}" type="button"><span class="desktop-icon-art">${iconMarkup(iconName)}</span><span class="icon-label">${label}</span></button>`;
 }
 
+const resizeHandleMarkup = (title) => `<div class="window-resize-handles">${['n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'].map((direction) => direction === 'se'
+  ? `<button class="window-resize-handle resize-${direction}" data-resize-handle="${direction}" type="button" aria-label="Resize ${escapeHtml(title)}" title="Drag or use arrow keys to resize"></button>`
+  : `<span class="window-resize-handle resize-${direction}" data-resize-handle="${direction}" aria-hidden="true"></span>`).join('')}</div>`;
+
 function renderWindow(id, index) {
   const config = catalog()[id];
   const windowState = state.windows[id];
-  const position = state.positions[id] ?? { left: state.osFlavor === 'win95' ? 150 + index * 28 : 138 + index * 32, top: state.osFlavor === 'win95' ? 75 + index * 24 : 60 + index * 24 };
+  const isMobileLayout = window.innerWidth <= 720;
+  const position = state.positions[id] ?? (state.osFlavor === 'win95'
+    ? { left: isMobileLayout ? 105 : 150 + index * 28, top: isMobileLayout ? 215 : 75 + index * 24 }
+    : { left: isMobileLayout ? 105 : 138 + index * 32, top: isMobileLayout ? 160 : 60 + index * 24 });
+  const size = state.sizes[id];
   const active = state.activeWindow === id;
   const classes = [state.osFlavor === 'win95' ? 'win-window' : 'mac-window'];
+  if (size) classes.push('is-resized');
   if (active) classes.push('is-active');
   if (windowState.minimized) classes.push('is-minimized');
   if (windowState.maximized) classes.push('is-maximized');
-  const style = windowState.maximized ? '' : `left:${position.left}px;top:${position.top}px;z-index:${active ? 50 : index + 2};`;
-  if (state.osFlavor === 'win95') return `<article class="${classes.join(' ')}" data-window="${id}" style="${style}" aria-label="${escapeHtml(config.title)}"><header class="win-titlebar" data-drag-handle="true"><span class="win-title-text">${iconMarkup(config.icon, 'title-icon')}${escapeHtml(config.title)}</span><div class="win-controls"><button class="win-control" data-action="minimize-window" data-window="${id}" type="button" aria-label="Minimize ${escapeHtml(config.title)}">_</button><button class="win-control" data-action="zoom-window" data-window="${id}" type="button" aria-label="Maximize ${escapeHtml(config.title)}">□</button><button class="win-control close" data-action="close-window" data-window="${id}" type="button" aria-label="Close ${escapeHtml(config.title)}">X</button></div></header><nav class="win-window-menu" aria-label="${escapeHtml(config.title)} menu"><button type="button">File</button><button type="button">Edit</button><button type="button">Search</button><button type="button">Help</button></nav><div class="win-window-body">${renderWindowContent(config.kind)}</div></article>`;
-  return `<article class="${classes.join(' ')}" data-window="${id}" style="${style}" aria-label="${escapeHtml(config.title)}"><header class="mac-titlebar" data-drag-handle="true"><button class="window-box close-box" data-action="close-window" data-window="${id}" type="button" aria-label="Close ${escapeHtml(config.title)}"></button><span class="window-title">${escapeHtml(config.title)}</span><span class="mac-window-actions"><button class="window-box minimize-box" data-action="minimize-window" data-window="${id}" type="button" aria-label="Minimize ${escapeHtml(config.title)}">_</button><button class="window-box zoom-box" data-action="zoom-window" data-window="${id}" type="button" aria-label="Zoom ${escapeHtml(config.title)}"></button></span></header><div class="mac-window-body">${renderWindowContent(config.kind)}</div></article>`;
+  const style = `z-index:${active ? 50 : index + 2};${windowState.maximized ? '' : `left:${position.left}px;top:${position.top}px;${size ? `width:${size.width}px;height:${size.height}px;` : ''}`}`;
+  const zoomLabel = windowState.maximized ? 'Restore' : (state.osFlavor === 'win95' ? 'Maximize' : 'Zoom');
+  if (state.osFlavor === 'win95') return `<article class="${classes.join(' ')}" data-window="${id}" style="${style}" aria-label="${escapeHtml(config.title)}"><header class="win-titlebar" data-drag-handle="true"><span class="win-title-text">${iconMarkup(config.icon, 'title-icon')}${escapeHtml(config.title)}</span><div class="win-controls"><button class="win-control" data-action="minimize-window" data-window="${id}" type="button" aria-label="Minimize ${escapeHtml(config.title)}">_</button><button class="win-control" data-action="zoom-window" data-window="${id}" type="button" aria-label="${zoomLabel} ${escapeHtml(config.title)}">□</button><button class="win-control close" data-action="close-window" data-window="${id}" type="button" aria-label="Close ${escapeHtml(config.title)}">X</button></div></header><nav class="win-window-menu" aria-label="${escapeHtml(config.title)} menu"><button type="button">File</button><button type="button">Edit</button><button type="button">Search</button><button type="button">Help</button></nav><div class="win-window-body">${renderWindowContent(config.kind)}</div>${resizeHandleMarkup(config.title)}</article>`;
+  return `<article class="${classes.join(' ')}" data-window="${id}" style="${style}" aria-label="${escapeHtml(config.title)}"><header class="mac-titlebar" data-drag-handle="true"><button class="window-box close-box" data-action="close-window" data-window="${id}" type="button" aria-label="Close ${escapeHtml(config.title)}"></button><span class="window-title">${escapeHtml(config.title)}</span><span class="mac-window-actions"><button class="window-box minimize-box" data-action="minimize-window" data-window="${id}" type="button" aria-label="Minimize ${escapeHtml(config.title)}">_</button><button class="window-box zoom-box" data-action="zoom-window" data-window="${id}" type="button" aria-label="${zoomLabel} ${escapeHtml(config.title)}"></button></span></header><div class="mac-window-body">${renderWindowContent(config.kind)}</div>${resizeHandleMarkup(config.title)}</article>`;
 }
 
 
@@ -234,11 +240,8 @@ function currentClockText() {
 
 function render() {
   const isRetro = state.theme === 'retro';
-  const isThreeDDesk = state.theme === 'desk';
   const isPixelRPG = state.theme === 'rpg';
   const isSketchbook = state.theme === 'sketch';
-  const isNeuralCore = state.theme === 'hud';
-  const isMegastructure = state.theme === 'megastructure';
   let shell = app.querySelector('.site-shell');
   if (!shell) {
     shell = document.createElement('div');
@@ -247,120 +250,29 @@ function render() {
     headerElement = createHeader({ onAction: handleHeaderAction });
     shell.querySelector('.header-root').append(headerElement);
   }
-  shell.className = `site-shell ${isRetro ? (state.osFlavor === 'win95' ? 'win95-shell' : 'mac-shell') : 'placeholder-theme'}`;
+  shell.className = `site-shell ${isRetro ? (state.osFlavor === 'win95' ? 'win95-shell' : 'mac-shell') : 'immersive-theme'}`;
   shell.dataset.theme = state.theme;
   updateHeader(headerElement, { currentTheme: state.theme, osFlavor: state.osFlavor, menu: state.menu, clockText: currentClockText() });
   const viewport = shell.querySelector('.viewport-root');
   if (isSketchbook) {
-    if (threeDDesk) {
-      threeDDesk.dispose();
-      threeDDesk = undefined;
-    }
     if (pixelRPG) {
       pixelRPG.dispose();
       pixelRPG = undefined;
-    }
-    if (neuralCore) {
-      neuralCore.dispose();
-      neuralCore = undefined;
-    }
-    if (megastructure) {
-      megastructure.dispose();
-      megastructure = undefined;
     }
     if (!watercolorSketchbook) {
       viewport.innerHTML = '<main class="sketchbook-viewport" aria-label="Watercolor sketchbook portfolio"><div class="sketchbook-mount"></div></main>';
       watercolorSketchbook = createWatercolorSketchbook({ container: viewport.querySelector('.sketchbook-mount'), profile, career, projects });
     }
   } else if (isPixelRPG) {
-    if (threeDDesk) {
-      threeDDesk.dispose();
-      threeDDesk = undefined;
-    }
     if (watercolorSketchbook) {
       watercolorSketchbook.dispose();
       watercolorSketchbook = undefined;
-    }
-    if (neuralCore) {
-      neuralCore.dispose();
-      neuralCore = undefined;
-    }
-    if (megastructure) {
-      megastructure.dispose();
-      megastructure = undefined;
     }
     if (!pixelRPG) {
       viewport.innerHTML = '<main class="pixel-rpg-viewport" aria-label="Nora\'s Realm 2D pixel RPG"><div class="pixel-rpg-mount"></div></main>';
       pixelRPG = createPixelRPG({ container: viewport.querySelector('.pixel-rpg-mount'), profile, career, ideaBoard });
     }
-  } else if (isThreeDDesk) {
-    if (pixelRPG) {
-      pixelRPG.dispose();
-      pixelRPG = undefined;
-    }
-    if (watercolorSketchbook) {
-      watercolorSketchbook.dispose();
-      watercolorSketchbook = undefined;
-    }
-    if (neuralCore) {
-      neuralCore.dispose();
-      neuralCore = undefined;
-    }
-    if (megastructure) {
-      megastructure.dispose();
-      megastructure = undefined;
-    }
-    if (!threeDDesk) {
-      viewport.innerHTML = '<main class="three-desk-viewport" aria-label="Three-dimensional developer desk"><div class="three-desk-mount"></div></main>';
-      threeDDesk = createThreeDDesk({ container: viewport.querySelector('.three-desk-mount'), profile, career, ideaBoard });
-    }
-  } else if (isNeuralCore) {
-    if (threeDDesk) {
-      threeDDesk.dispose();
-      threeDDesk = undefined;
-    }
-    if (pixelRPG) {
-      pixelRPG.dispose();
-      pixelRPG = undefined;
-    }
-    if (watercolorSketchbook) {
-      watercolorSketchbook.dispose();
-      watercolorSketchbook = undefined;
-    }
-    if (megastructure) {
-      megastructure.dispose();
-      megastructure = undefined;
-    }
-    if (!neuralCore) {
-      viewport.innerHTML = '<main class="neural-core-viewport" aria-label="Neural Core orbital node map"><div class="neural-core-mount"></div></main>';
-      neuralCore = createNeuralCore({ container: viewport.querySelector('.neural-core-mount'), profile, career, ideaBoard });
-    }
-  } else if (isMegastructure) {
-    if (threeDDesk) {
-      threeDDesk.dispose();
-      threeDDesk = undefined;
-    }
-    if (pixelRPG) {
-      pixelRPG.dispose();
-      pixelRPG = undefined;
-    }
-    if (watercolorSketchbook) {
-      watercolorSketchbook.dispose();
-      watercolorSketchbook = undefined;
-    }
-    if (neuralCore) {
-      neuralCore.dispose();
-      neuralCore = undefined;
-    }
-    if (!megastructure) {
-      viewport.innerHTML = '<main class="megastructure-viewport" aria-label="Megastructure Elevator vertical portfolio"><div class="megastructure-mount"></div></main>';
-      megastructure = createMegastructure({ container: viewport.querySelector('.megastructure-mount'), profile, career, ideaBoard });
-    }
   } else {
-    if (threeDDesk) {
-      threeDDesk.dispose();
-      threeDDesk = undefined;
-    }
     if (pixelRPG) {
       pixelRPG.dispose();
       pixelRPG = undefined;
@@ -369,15 +281,7 @@ function render() {
       watercolorSketchbook.dispose();
       watercolorSketchbook = undefined;
     }
-    if (neuralCore) {
-      neuralCore.dispose();
-      neuralCore = undefined;
-    }
-    if (megastructure) {
-      megastructure.dispose();
-      megastructure = undefined;
-    }
-    viewport.innerHTML = isRetro ? (state.osFlavor === 'win95' ? renderWin95() : renderMac()) : `<main class="construction-screen"><div class="construction-card"><p class="document-kicker">DIMENSION ${escapeHtml(state.theme.toUpperCase())}</p><h1>Dimension under construction</h1><p>Switch to Retro OS to experience the active theme.</p><button class="retro-button primary" data-action="theme" data-theme="retro" type="button">Return to Retro OS</button></div></main>`;
+    viewport.innerHTML = state.osFlavor === 'win95' ? renderWin95() : renderMac();
   }
   shell.querySelector('.dialog-root').innerHTML = renderDialogs();
   updateClock();
@@ -391,36 +295,148 @@ function updateClock() {
 }
 
 function bindWindowInteractions() {
+  const clamp = (value, minimum, maximum) => Math.min(Math.max(value, minimum), maximum);
+  const activateWindow = (element, id) => {
+    if (!state.windows[id]) return;
+    state.activeWindow = id;
+    state.windows[id].minimized = false;
+    element.style.zIndex = '50';
+    document.querySelectorAll('.win-window, .mac-window').forEach((windowElement) => windowElement.classList.toggle('is-active', windowElement === element));
+  };
+  const applyGeometry = (element, id, left, top, width, height) => {
+    element.style.left = `${left}px`;
+    element.style.top = `${top}px`;
+    element.style.width = `${width}px`;
+    element.style.height = `${height}px`;
+    state.positions[id] = { left, top };
+    element.classList.add('is-resized');
+    state.sizes[id] = { width, height };
+  };
+
   document.querySelectorAll('.win-window, .mac-window').forEach((element) => {
-    element.addEventListener('pointerdown', () => {
-      const id = element.dataset.window;
-      if (!state.windows[id]) return;
-      state.activeWindow = id;
-      state.windows[id].minimized = false;
-      element.style.zIndex = '50';
-      document.querySelectorAll('.win-window, .mac-window').forEach((windowElement) => windowElement.classList.toggle('is-active', windowElement === element));
-    });
+    const id = element.dataset.window;
+    const parent = element.parentElement;
+    if (!state.windows[id].maximized) {
+      const parentRect = parent.getBoundingClientRect();
+      const rect = element.getBoundingClientRect();
+      const maxLeft = Math.max(4, parent.clientWidth - rect.width - 4);
+      const maxTop = Math.max(4, parent.clientHeight - rect.height - 4);
+      const left = clamp(rect.left - parentRect.left, 4, maxLeft);
+      const top = clamp(rect.top - parentRect.top, 4, maxTop);
+      element.style.left = `${left}px`;
+      element.style.top = `${top}px`;
+      state.positions[id] = { left, top };
+    }
+    element.addEventListener('pointerdown', () => activateWindow(element, id));
   });
+
   document.querySelectorAll('[data-drag-handle]').forEach((handle) => {
     handle.addEventListener('pointerdown', (event) => {
-      if (event.target.closest('button')) return;
+      if (event.button !== 0 || event.target.closest('button')) return;
       const element = handle.closest('.win-window, .mac-window');
       const id = element.dataset.window;
       if (state.windows[id].maximized) return;
-      state.activeWindow = id;
-      element.style.zIndex = '50';
+      event.preventDefault();
+      activateWindow(element, id);
+      const parent = element.parentElement;
+      const parentRect = parent.getBoundingClientRect();
       const rect = element.getBoundingClientRect();
-      const origin = { x: event.clientX, y: event.clientY, left: rect.left, top: rect.top };
+      const origin = { x: event.clientX, y: event.clientY, left: rect.left - parentRect.left, top: rect.top - parentRect.top };
+      const titlebarHeight = handle.getBoundingClientRect().height;
       const move = (moveEvent) => {
-        const left = Math.max(4, origin.left + moveEvent.clientX - origin.x);
-        const top = Math.max(4, origin.top + moveEvent.clientY - origin.y);
+        const maxLeft = Math.max(4, parent.clientWidth - Math.min(rect.width, 80));
+        const maxTop = Math.max(4, parent.clientHeight - titlebarHeight);
+        const left = clamp(origin.left + moveEvent.clientX - origin.x, 4, maxLeft);
+        const top = clamp(origin.top + moveEvent.clientY - origin.y, 4, maxTop);
         element.style.left = `${left}px`;
         element.style.top = `${top}px`;
         state.positions[id] = { left, top };
       };
-      const end = () => document.removeEventListener('pointermove', move);
+      const end = () => {
+        document.removeEventListener('pointermove', move);
+        document.removeEventListener('pointercancel', end);
+      };
       document.addEventListener('pointermove', move);
       document.addEventListener('pointerup', end, { once: true });
+      document.addEventListener('pointercancel', end, { once: true });
+    });
+  });
+
+  document.querySelectorAll('[data-resize-handle]').forEach((handle) => {
+    const element = handle.closest('.win-window, .mac-window');
+    const id = element.dataset.window;
+    const resizeTo = (width, height) => {
+      const parent = element.parentElement;
+      const left = state.positions[id].left;
+      const top = state.positions[id].top;
+      const maximumWidth = parent.clientWidth - left;
+      const maximumHeight = parent.clientHeight - top;
+      const minimumWidth = Math.min(parent.clientWidth <= 720 ? 180 : 280, maximumWidth);
+      const minimumHeight = Math.min(160, maximumHeight);
+      applyGeometry(element, id, left, top, clamp(width, minimumWidth, maximumWidth), clamp(height, minimumHeight, maximumHeight));
+    };
+
+    handle.addEventListener('pointerdown', (event) => {
+      if (event.button !== 0 || state.windows[id].maximized) return;
+      event.preventDefault();
+      event.stopPropagation();
+      activateWindow(element, id);
+      const parent = element.parentElement;
+      const parentRect = parent.getBoundingClientRect();
+      const rect = element.getBoundingClientRect();
+      const origin = {
+        x: event.clientX,
+        y: event.clientY,
+        left: rect.left - parentRect.left,
+        top: rect.top - parentRect.top,
+        width: rect.width,
+        height: rect.height,
+      };
+      const direction = handle.dataset.resizeHandle;
+      const move = (moveEvent) => {
+        let { left, top, width, height } = origin;
+        const deltaX = moveEvent.clientX - origin.x;
+        const deltaY = moveEvent.clientY - origin.y;
+        if (direction.includes('w')) {
+          const right = origin.left + origin.width;
+          const minimumWidth = Math.min(parent.clientWidth <= 720 ? 180 : 280, right);
+          width = clamp(origin.width - deltaX, minimumWidth, right);
+          left = right - width;
+        } else if (direction.includes('e')) {
+          const maximumWidth = parent.clientWidth - origin.left;
+          const minimumWidth = Math.min(parent.clientWidth <= 720 ? 180 : 280, maximumWidth);
+          width = clamp(origin.width + deltaX, minimumWidth, maximumWidth);
+        }
+        if (direction.includes('n')) {
+          const bottom = origin.top + origin.height;
+          const minimumHeight = Math.min(160, bottom);
+          height = clamp(origin.height - deltaY, minimumHeight, bottom);
+          top = bottom - height;
+        } else if (direction.includes('s')) {
+          const maximumHeight = parent.clientHeight - origin.top;
+          const minimumHeight = Math.min(160, maximumHeight);
+          height = clamp(origin.height + deltaY, minimumHeight, maximumHeight);
+        }
+        applyGeometry(element, id, left, top, width, height);
+      };
+      const end = () => {
+        document.removeEventListener('pointermove', move);
+        document.removeEventListener('pointercancel', end);
+      };
+      document.addEventListener('pointermove', move);
+      document.addEventListener('pointerup', end, { once: true });
+      document.addEventListener('pointercancel', end, { once: true });
+    });
+
+    handle.addEventListener('keydown', (event) => {
+      if (state.windows[id].maximized) return;
+      const adjustments = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
+      const adjustment = adjustments[event.key];
+      if (!adjustment) return;
+      event.preventDefault();
+      const rect = element.getBoundingClientRect();
+      const step = event.shiftKey ? 20 : 10;
+      resizeTo(rect.width + adjustment[0] * step, rect.height + adjustment[1] * step);
     });
   });
 }

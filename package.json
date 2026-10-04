@@ -13,8 +13,5 @@
   "devDependencies": {
     "concurrently": "^9.1.2",
     "vite": "^7.1.4"
-  },
-  "dependencies": {
-    "three": "^0.185.1"
   }
 }
